@@ -1,6 +1,6 @@
 import React from 'react';
 
-class App {
+class App extends React.Component {
   render() {
     return (<p>Home Path</p>);
   }

@@ -1,8 +1,8 @@
 import React from 'react';
 
-class App extends React.Component {
+class Home extends React.Component {
   render() {
     return (<p>Home Path</p>);
   }
 }
-export default App
+export default Home

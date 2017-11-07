@@ -25,7 +25,7 @@ class Home extends React.Component {
         {blackCard}
         </div>
         <div className='bottom'>
-        {whiteCards};
+        {whiteCards}
         </div>
       </div>
     );

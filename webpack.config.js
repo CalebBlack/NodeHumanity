@@ -1,10 +1,19 @@
+const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
+
 module.exports = {
   output: {
     filename: "source.js",
     path: __dirname +"/build"
   },
+  plugins: [
+    new UglifyJSPlugin()
+  ],
   module: {
-    loaders: [
+    rules: [
+      {
+        test: /\.css$/,
+        use: [ 'style-loader', 'css-loader' ]
+      },
       {
         test: /\.js$/,
         exclude: /node_modules/,
@@ -12,12 +21,6 @@ module.exports = {
         query: {
           presets: ['es2015','react']
         }
-      }
-    ],
-    rules: [
-      {
-        test: /\.css$/,
-        use: [ 'style-loader', 'css-loader' ]
       }
     ]
   },

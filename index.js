@@ -1,10 +1,10 @@
 const app = require('./app');
 const stringToInt = require('./functions/stringtoint');
 
-const port = process.argv[2] ? stringToInt(process.argv[2]) : null;
+const port = process.argv[2] ? stringToInt(process.argv[2]) : 8080;
 
 if (port === null) {
-  throw new Error('Cannot Start, Invalid or Missing Port Argument.');
+  throw new Error('Cannot Start, Invalid Port Argument.');
 }
 
 try {

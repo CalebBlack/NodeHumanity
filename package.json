@@ -1,0 +1,26 @@
+{
+  "name": "nodehumanity",
+  "version": "1.0.0",
+  "description": "Cards Against Humanity with Express, Socket.io & React",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CalebBlack/NodeHumanity.git"
+  },
+  "keywords": [
+    "express",
+    "react",
+    "socketio",
+    "websockets"
+  ],
+  "author": "CalebBlack",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/CalebBlack/NodeHumanity/issues"
+  },
+  "homepage": "https://github.com/CalebBlack/NodeHumanity#readme"
+}

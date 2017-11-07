@@ -7,4 +7,4 @@ if (port === null) {
   throw new Error('Cannot Start, Invalid or Missing Port Argument.');
 }
 
-app.start(port);
+app.listen(port);

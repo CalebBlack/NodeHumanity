@@ -22,5 +22,8 @@
   "bugs": {
     "url": "https://github.com/CalebBlack/NodeHumanity/issues"
   },
-  "homepage": "https://github.com/CalebBlack/NodeHumanity#readme"
+  "homepage": "https://github.com/CalebBlack/NodeHumanity#readme",
+  "dependencies": {
+    "express": "^4.16.2"
+  }
 }

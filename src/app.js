@@ -1,12 +1,13 @@
 import React from 'react';
-import {Switch, Route} from 'react-router-dom';
+import Router from './paths/router';
+
 class App extends React.Component {
   render(){
     return (
       <div id='app'>
-
+        <Router/>
       </div>
     );
   }
 }
-module.exports = App;
+export default App;

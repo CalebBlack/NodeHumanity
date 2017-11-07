@@ -4,5 +4,5 @@ import App from './app';
 import './index.css';
 
 window.addEventListener('load',()=>{
-  ReactDOM.render(<App/>,document.body);
+  ReactDOM.render(<App/>,document.getElementById('root'));
 })

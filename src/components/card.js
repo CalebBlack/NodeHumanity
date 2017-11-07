@@ -5,7 +5,7 @@ class Card extends React.Component {
   render(){
     return (
       <div className={'card '+this.props.color}>
-        <p className='text'>{this.props.text}</p>
+        <p className='text' dangerouslySetInnerHTML={{__html:this.props.text}}></p>
       </div>
     )
   }

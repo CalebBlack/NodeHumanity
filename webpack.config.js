@@ -1,7 +1,7 @@
-{
-    entry: "./src/index",
-    output: {
-        path: "./build",
-        filename: "source.js"
-    }
+module.exports = {
+  output: {
+    filename: "source.js",
+    path: __dirname +"/build"
+  },
+  entry: "./src/index.js"
 }

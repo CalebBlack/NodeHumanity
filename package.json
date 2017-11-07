@@ -24,6 +24,8 @@
   },
   "homepage": "https://github.com/CalebBlack/NodeHumanity#readme",
   "dependencies": {
-    "express": "^4.16.2"
+    "express": "^4.16.2",
+    "react-dom": "^16.0.0",
+    "webpack": "^3.8.1"
   }
 }

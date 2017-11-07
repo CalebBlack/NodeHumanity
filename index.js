@@ -7,4 +7,7 @@ if (port === null) {
   throw new Error('Cannot Start, Invalid or Missing Port Argument.');
 }
 
-app.listen(port);
+app.listen(port,err=>{
+  if (err) throw err;
+  console.log(`Server Running on Port ${port}.`);
+});

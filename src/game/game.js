@@ -1,5 +1,6 @@
 import React from 'react';
 import Background from '../components/background';
+import {connect} from 'react-router-dom';
 
 class Game extends React.Component {
   render(){
@@ -10,4 +11,6 @@ class Game extends React.Component {
   );
   }
 }
-export default Game;
+export default connect(state=>{
+  return {loginStatus:state.loginStatus}
+})(Game);

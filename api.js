@@ -39,7 +39,7 @@ api.post('/createuser', (req, res) => {
                 var userOut = {username:user.username,displayname:user.displayname};
                 getSession(user).then(session=>{
                   console.log('session',session);
-                  let sessionOut = {id:session._id,expires:session.expires,created:session.created};
+                  let sessionOut = {id:session._id,created:session.createdAt};
                   return res.status(200).json({user:userOut,session:sessionOut});
                 }).catch(err=>{
                   console.log('err',err);
@@ -67,7 +67,8 @@ api.get('/login', (req, res) => {
   console.log('get got');
   authenticateRequest(req).then(user=>{
     getSession(user).then(session=>{
-      let sessionOut = {id:session._id,expires:session.expires,created:session.created};
+      console.log(session);
+      let sessionOut = {id:session._id,created:session.createdAt};
       res.status(200).json({session:sessionOut});
     }).catch(err=>{
       res.status(500).send('Internal Error');

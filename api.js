@@ -67,12 +67,12 @@ api.get('/login', (req, res) => {
   console.log('get got');
   authenticateRequest(req).then(user=>{
     getSession(user).then(session=>{
-      console.log(session);
+      var userOut = {username:user.username,displayname:user.displayname};
       let sessionOut = {id:session._id,created:session.createdAt};
-      res.status(200).json({session:sessionOut});
+      res.status(200).json({session:sessionOut,user:userOut});
     }).catch(err=>{
       res.status(500).send('Internal Error');
-    })
+    });
   }).catch(err=>{
     res.status(401).send('Unauthorized');
   });

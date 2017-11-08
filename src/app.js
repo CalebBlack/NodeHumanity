@@ -1,5 +1,6 @@
 import React from 'react';
 import Router from './router';
+import Background from './components/background';
 import getCardDatabase from './redux/actions/getCardDatabase';
 import {connect} from 'react-redux';
 import {withRouter} from 'react-router-dom';
@@ -12,6 +13,7 @@ class App extends React.Component {
   render(){
     return (
       <div id='app'>
+        <Background/>
         <Router/>
       </div>
     );

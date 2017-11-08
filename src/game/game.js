@@ -11,7 +11,6 @@ class Game extends React.Component {
     if (this.props.loginStatus !== loginStatuses.loggedIn) return (<Redirect to='/login'/>);
     return (
     <div id='game'>
-      <Background/>
     </div>
   );
   }

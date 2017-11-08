@@ -4,7 +4,6 @@ import Card from '../components/card';
 import {connect} from 'react-redux';
 import {Link} from 'react-router-dom';
 import randomBetween from '../functions/randombetween';
-import Background from '../components/background';
 
 class Home extends React.Component {
   constructor(props){
@@ -20,7 +19,6 @@ class Home extends React.Component {
     });
     return (
       <div className='home' ref={ref=>{if (!this.state.home){this.setState({home:ref})}}}>
-        <Background/>
         <h1 className='title'>Cards Against Humanity</h1>
         <Link to='play' className='playbanner'>Play!</Link>
         <div className='top'>

@@ -8,6 +8,7 @@ const {
 const validate = require('./functions/validate');
 const authenticateRequest = require('./functions/authenticaterequest');
 const decodeAuthHeaders = require('./functions/decodeauthheaders');
+const getSession = require('./functions/getsession');
 
 const api = express.Router();
 
@@ -35,7 +36,15 @@ api.post('/createuser', (req, res) => {
               var userEntry = new User(userData);
               userEntry.save((err,user)=>{
                 if (err) return res.status(500).send();
-                res.status(200).send('User Created');
+                var userOut = {username:user.username,displayname:user.displayname};
+                getSession(user).then(session=>{
+                  console.log('session',session);
+                  let sessionOut = {id:session._id,expires:session.expires,created:session.created};
+                  return res.status(200).json({user:userOut,session:sessionOut});
+                }).catch(err=>{
+                  console.log('err',err);
+                  return res.status(200).json({user:userOut,session:'error'});
+                });
               })
             });
           } else {
@@ -55,12 +64,17 @@ api.post('/createuser', (req, res) => {
   }
 });
 api.get('/login', (req, res) => {
-  const user = authenticateRequest(req);
-  if (user) {
-    res.status(200).send('Authorized');
-  } else {
+  console.log('get got');
+  authenticateRequest(req).then(user=>{
+    getSession(user).then(session=>{
+      let sessionOut = {id:session._id,expires:session.expires,created:session.created};
+      res.status(200).json({session:sessionOut});
+    }).catch(err=>{
+      res.status(500).send('Internal Error');
+    })
+  }).catch(err=>{
     res.status(401).send('Unauthorized');
-  }
+  });
 });
 
 module.exports = api

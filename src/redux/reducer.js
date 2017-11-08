@@ -7,7 +7,7 @@ function reducer(state, action) {
     return initialState;
   }
   switch(action.type) {
-    case setLoginStatus:
+    case actionTypes.setLoginStatus:
       return Object.assign({},state,{loginStatus:action.loginStatus});
     case actionTypes.setCardDatabase:
       return Object.assign({},state,{cards:action.cards,blackCards:action.cards.blackCards,whiteCards:action.cards.whiteCards});

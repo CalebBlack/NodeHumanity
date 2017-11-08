@@ -1,5 +1,4 @@
 .card {
-  display: inline-block;
   vertical-align: top;
   width: 220px;
   height: 320px;
@@ -7,6 +6,12 @@
   font-size: 2em;
   border-radius: 15px;
   overflow-y: auto;
+  visibility: hidden;
+  display: none;
+  &.white, &.black {
+    visibility: visible;
+    display: inline-block;
+  }
   &.white {
     background-color: white;
     color: black;

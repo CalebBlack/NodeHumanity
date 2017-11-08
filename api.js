@@ -1,5 +1,6 @@
 const express = require('express');
 const Isemail = require('isemail');
+const bcrypt = require('bcrypt');
 
 const {
   User
@@ -24,10 +25,19 @@ api.post('/createuser', (req, res) => {
         if (req.body.email) {
           if (typeof req.body.email == 'string' && Isemail.validate(req.body.email)) {
             var userData = {
+              displayname: auth[0],
               username: auth[0],
               email: req.body.email
             };
-            
+            bcrypt.hash(auth[0], 10, function(err, hash) {
+              if (err) return res.status(500).send();
+              userData.hash = hash;
+              var userEntry = new User(userData);
+              userEntry.save((err,user)=>{
+                if (err) return res.status(500).send();
+                res.status(200).send('User Created');
+              })
+            });
           } else {
             res.status(400).send('Malformed Email');
           }

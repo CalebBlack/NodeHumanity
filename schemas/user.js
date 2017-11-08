@@ -1,6 +1,6 @@
 module.exports = {
-  username: {type:String,required:true},
-  email: {type:String,required:true},
-  hash: {type:String,required:true},
-  session: {type:String,required:true}
+  displayname: {type:String,required:true,unique:false},
+  username: {type:String,required:true,unique:true,lowercase:true},
+  email: {type:String,required:true,unique:true},
+  hash: {type:String,required:true}
 }

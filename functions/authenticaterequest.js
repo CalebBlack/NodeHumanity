@@ -13,4 +13,4 @@ function authenticateRequest(req){
     })
   }
 }
-module.exports = authenticaterequest;
+module.exports = authenticateRequest;

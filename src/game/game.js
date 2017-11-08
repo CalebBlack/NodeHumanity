@@ -7,7 +7,7 @@ import * as loginStatuses from '../redux/loginstatuses';
 
 class Game extends React.Component {
   render(){
-    if (this.props.loginStatus === null || this.props.loginStatus === loginStatuses.initializing) return (<Loading/>);
+    if (this.props.loginStatus === null || [loginStatuses.loggingIn,loginStatuses.initializing].includes(this.props.loginStatus)) return (<Loading/>);
     if (this.props.loginStatus !== loginStatuses.loggedIn) return (<Redirect to='/login'/>);
     return (
     <div id='game'>

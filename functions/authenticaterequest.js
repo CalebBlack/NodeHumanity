@@ -1,5 +1,5 @@
 const {User} = require('../models');
-async function authenticaterequest(req){
+function authenticaterequest(req){
   if (req.headers.authorization) {
     var auth = req.headers.authorization;
     if (auth.startsWith('Basic ') && auth.length > 6) {

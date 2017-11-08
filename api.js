@@ -1,5 +1,6 @@
 var express = require('express');
 const {User} = require('./models');
+const authenticaterequest = require('./functions/authenticaterequest');
 
 const api = express.Router();
 
@@ -13,9 +14,9 @@ api.post('/createuser', (req, res)=>{
 
 });
 api.get('/login',(req,res)=>{
-  if (req.headers.authorization) {
-    console.log(req.headers.authorization);
-    res.status(200).send("Authorized");
+  const user = authenticaterequest(req);
+  if (user) {
+    res.status(200).send('Authorized');
   } else {
     res.status(401).send('Unauthorized');
   }

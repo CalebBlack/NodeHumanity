@@ -64,7 +64,6 @@ api.post('/createuser', (req, res) => {
   }
 });
 api.get('/login', (req, res) => {
-  console.log('get got');
   authenticateRequest(req).then(user=>{
     getSession(user).then(session=>{
       var userOut = {username:user.username,displayname:user.displayname};

@@ -6,7 +6,8 @@ function authenticateRequest(req){
     auth = decodeAuthHeaders(req);
     if (auth && auth.length == 2) {
       User.findOne({username:auth[0]},(err,user)=>{
-        if (err) reject(err);
+        if (err) return reject(err);
+        if (!user) return reject();
         bcrypt.compare(auth[0], user.hash, function(err, res) {
           if (err || res !== true) reject(err);
           resolve(user);

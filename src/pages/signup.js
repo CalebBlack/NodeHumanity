@@ -1,13 +1,13 @@
 import React from 'react';
-import './login.less';
+import './signup.less';
 import Loading from '../components/loading';
-import {login} from '../redux/actions/login';
+import {signup} from '../redux/actions/login';
 import {Link, Redirect} from 'react-router-dom';
 import {connect} from 'react-redux';
 import * as loginStatuses from '../redux/loginstatuses';
 import * as enforceInput from '../functions/enforceinput';
 
-class Login extends React.Component {
+class Signup extends React.Component {
   constructor(props){
     super(props);
     this.submit = this.submit.bind(this);
@@ -20,13 +20,14 @@ class Login extends React.Component {
     }
     var self = this;
     return (
-    <form onSubmit={(e)=>{e.preventDefault();this.submit();}} className='login'>
+    <form onSubmit={(e)=>{e.preventDefault();this.submit();}} className='signup'>
       <label htmlFor='username'>Username</label>
-      <input ref={ref=>{this.username = ref;enforceInput.username(ref);}} id='username' name='username' className='username'/>
+      <input ref={ref=>{this.username = ref;enforceInput.username(ref)}} id='username' name='username' className='username'/>
       <label htmlFor='password'>Password</label>
       <input ref={ref=>{this.password = ref;enforceInput.password(ref)}} id='password' type='password' name='password' className='password'/>
-      <button className='submitlogin'>Login</button>
-      <Link to='/signup' className='signuplink'>New User? Signup</Link>
+      <label htmlFor='email'>Email</label>
+      <input ref={ref=>{this.email = ref;enforceInput.email(ref)}} id='email' type='text' name='email' className='email'/>
+      <button className='submitsignup'>Signup</button>
     </form>
   );
   }
@@ -37,14 +38,7 @@ class Login extends React.Component {
     if (username.length < 1 || password.length < 1) return;
     this.props.dispatch(login(username,password));
   }
-  signup(){
-    if (!this.password || !this.username) return;
-    let username = this.username.value.replace(' ','');
-    let password = this.password.value.replace(' ','');
-    if (username.length < 1 || password.length < 1) return;
-    console.log('signing up');
-  }
 }
 export default connect(state=>{
   return {loginStatus:state.loginStatus}
-})(Login);
+})(Signup);

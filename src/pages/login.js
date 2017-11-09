@@ -39,8 +39,8 @@ class Login extends React.Component {
   }
   signup(){
     if (!this.password || !this.username) return;
-    let username = this.username.value.replace(' ','');
-    let password = this.password.value.replace(' ','');
+    let username = this.username.value;
+    let password = this.password.value;
     if (username.length < 1 || password.length < 1) return;
     console.log('signing up');
   }

@@ -5,7 +5,6 @@ function authenticateSession(req){
       Session.findOne({_id:req.headers.session},(err,session)=>{
         if (err) return reject(err);
         if (!session) return reject(null);
-        console.log('s',session);
         resolve(session);
       });
     } else {

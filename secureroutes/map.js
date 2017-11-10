@@ -1,1 +1,1 @@
-module.exports = ['birthday'].map(name=>{return require('./'+name)});
+module.exports = [].map(name=>{return require('./'+name)});

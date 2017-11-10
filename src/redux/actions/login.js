@@ -30,7 +30,7 @@ export function signup(username,password,email) {
 export function initialize(){
   return dispatch=>{
     if (localStorage.sessionID) {
-      request('/api/validateauth','get',{session:localStorage.sessionID}).then(response=>{
+      request('/api/validateauth','get',{secure:true}).then(response=>{
         dispatch({type:setLoginStatus,loginStatus:loginStatuses.loggedIn});
       }).catch(err=>{
         dispatch({type:setLoginStatus,loginStatus:loginStatuses.expired});

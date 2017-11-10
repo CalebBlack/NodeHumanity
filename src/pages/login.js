@@ -15,7 +15,6 @@ class Login extends React.Component {
   }
   render(){
     if (this.props && this.props.loginStatus) {
-      console.log('ls',this.props.loginStatus);
       if (this.props.loginStatus === loginStatuses.loggedIn) return (<Redirect to='/play'/>);
       if ([loginStatuses.loggingIn,loginStatuses.initializing].includes(this.props.loginStatus)) return (<Loading/>);
     }

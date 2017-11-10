@@ -7,7 +7,7 @@ import './logoutbutton.css';
 class LogoutButton extends React.Component {
   render(){
     if (this.props && this.props.loggedIn !== true) return null;
-    return (<Link to='/logout'><div className='logoutbutton'><Exit/></div></Link>);
+    return (<Link className='logoutbutton' to='/logout'><Exit/></Link>);
   }
 }
 

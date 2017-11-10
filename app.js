@@ -3,8 +3,6 @@ const bodyParser = require('body-parser');
 const helmet = require('helmet');
 
 const api = require('./api');
-const secure = require('./secure');
-const routes = require('./routes/map');
 
 const app = express();
 
@@ -27,10 +25,8 @@ app.use(express.static('public'));
 app.use(express.static('build'));
 app.use(express.static('resources'));
 
-// ROUTES
+// ROUTING
 app.use('/api',api);
-app.use(secure);
-routes.forEach(route=>{app[route[1]](route[0],route[2])});
 
 // OTHER
 app.use((req, res) => res.sendFile(`${__dirname}/public/index.html`))

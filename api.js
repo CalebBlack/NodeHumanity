@@ -10,6 +10,8 @@ const authenticateRequest = require('./functions/authenticaterequest');
 const authenticateSession = require('./functions/authenticatesession');
 const decodeAuthHeaders = require('./functions/decodeauthheaders');
 const getSession = require('./functions/getsession');
+const routes = require('./routes');
+const secureRoutes = require('./secureroutes');
 
 const api = express.Router();
 
@@ -88,5 +90,9 @@ api.get('/logout',(req,res)=>{
     res.status(401).send('Unauthorized');
   });
 });
+// END OF AUTH ROUTES
+// ENABLE ROUTERS
+api.use(routes);
+api.use(secureRoutes);
 
 module.exports = api;

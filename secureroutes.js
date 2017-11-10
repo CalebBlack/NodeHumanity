@@ -1,19 +1,20 @@
 // CREATE SECURE ENDPOINTS
 const express = require('express');
 const authenticateSession = require('./functions/authenticatesession');
-const secureRoutes = require('./secureroutes/map');
+const secureMap = require('./secureroutes/map');
 
-const secure = express.Router();
+const secureRoutes = express.Router();
 
 secure.use((req,res,next)=>{
   authenticateSession(req).then(session=>{
+    console.log({session});
     res.locals.session = session;
     next();
   }).catch(err=>{
-    req.status(400).send('Unauthorized');
+    res.status(400).send('Unauthorized');
   });
 });
 
-secureRoutes.forEach(route=>{secure[route[1]](route[0],route[2])});
+secureMap.forEach(route=>{secureRoutes[route[1]](route[2],route[0])});
 
-module.exports = secure;
+module.exports = secureRoutes;

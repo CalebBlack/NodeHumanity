@@ -17,6 +17,11 @@ function request(url,method='get',options={}) {
     var xhr = new XMLHttpRequest();
     xhr.open(method, url);
     if (options.auth) xhr.setRequestHeader('Authorization','Basic '+btoa(options.auth.join(':')));
+    if (options.headers) {
+      Object.entries(options.headers).forEach(pair=>{
+        xhr.setRequestHeader(pair[0],pair[1]);
+      })
+    }
     xhr.onload = function () {
       if (this.status >= 200 && this.status < 300) {
         resolve(xhr.response);

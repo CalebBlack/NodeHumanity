@@ -3,6 +3,7 @@ import './signup.less';
 import Loading from '../components/loading';
 import {signup} from '../redux/actions/login';
 import {Link, Redirect} from 'react-router-dom';
+import HomeLink from '../components/homelink';
 import {connect} from 'react-redux';
 import * as loginStatuses from '../redux/loginstatuses';
 import * as enforceInput from '../functions/enforceinput';
@@ -21,6 +22,7 @@ class Signup extends React.Component {
     var self = this;
     return (
     <form onSubmit={(e)=>{e.preventDefault();this.submit();}} className='signup'>
+      <HomeLink/>
       <label htmlFor='username'>Username</label>
       <input ref={ref=>{this.username = ref;enforceInput.username(ref)}} id='username' name='username' className='username'/>
       <label htmlFor='password'>Password</label>

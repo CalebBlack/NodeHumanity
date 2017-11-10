@@ -7,6 +7,7 @@ const {
 } = require('./models');
 const validate = require('./functions/validate');
 const authenticateRequest = require('./functions/authenticaterequest');
+const authenticateSession = require('./functions/authenticatesession');
 const decodeAuthHeaders = require('./functions/decodeauthheaders');
 const getSession = require('./functions/getsession');
 
@@ -78,21 +79,14 @@ api.get('/login', (req, res) => {
 });
 
 api.get('/logout',(req,res)=>{
-  if (req.headers && req.headers.session && typeof req.headers.session == 'string' && req.headers.session.length > 0) {
-    Session.findOne({_id:req.headers.session},(err,session)=>{
+  authenticateSession(req).then(session=>{
+    session.remove(err=>{
       if (err) return res.status(500).send('error');
-      if (session) {
-        session.remove(err=>{
-          if (err) return res.status(500).send('error');
-          res.status(200).send('Logout Successful');
-        })
-      } else {
-        res.status(401).send('Unauthorized');
-      }
-    })
-  } else {
+      res.status(200).send('Logout Successful');
+    });
+  }).catch(err=>{
     res.status(401).send('Unauthorized');
-  }
+  });
 });
 
-module.exports = api
+module.exports = api;

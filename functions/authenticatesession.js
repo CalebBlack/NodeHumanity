@@ -1,10 +1,14 @@
 const {Session} = require('../models');
-function authenticateSession(sessionID){
+function authenticateSession(req){
   return new Promise((resolve,reject)=>{
-    Session.find({_id:sessionID},(err,session)=>{
-      if (err) return reject(err);
-      if (!session) return reject(null);
-      resolve(session);
-    });
+    if (req.headers && req.headers.session && typeof req.headers.session == 'string' && req.headers.session.length > 0) {
+      Session.find({_id:req.headers.session},(err,session)=>{
+        if (err) return reject(err);
+        if (!session) return reject(null);
+        resolve(session);
+      });
+    } else {
+      reject('Unauthorized');
+    }
   });
 }

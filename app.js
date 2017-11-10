@@ -11,6 +11,11 @@ app.use(bodyParser.json());
 app.use(helmet());
 app.use(helmet.referrerPolicy({ policy: 'same-origin' }));
 
+app.use(function(err, req, res, next) {
+  console.error(err);
+  res.status(500).send('Error');
+});
+
 app.use(express.static('public'));
 app.use(express.static('build'));
 app.use(express.static('resources'));

@@ -25,15 +25,15 @@ function request(url,method='get',options={}) {
       })
     }
     xhr.onload = function () {
-      if (this.status >= 200 && this.status <= 304) {
+      if (xhr.status >= 200 && xhr.status <= 304) {
         resolve(xhr.response);
       } else {
         reject({
-          status: this.status,
+          status: xhr.status,
           statusText: xhr.statusText
         });
       }
-    }.bind(this);
+    }
     xhr.onerror = function () {
       reject({
         status: xhr.status,

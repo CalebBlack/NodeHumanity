@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const helmet = require('helmet');
 
 const api = require('./api');
+const sockets = require('./sockets');
 
 const app = express();
 
@@ -29,6 +30,7 @@ app.use(express.static('resources'));
 app.use('/api',api);
 
 // OTHER
-app.use((req, res) => res.sendFile(`${__dirname}/public/index.html`))
+app.use((req, res) => res.sendFile(`${__dirname}/public/index.html`));
+sockets(app);
 
 module.exports = app;

@@ -1,5 +1,6 @@
 const {Session} = require('./models');
 var socketList = [];
+const GameManager = require('./gamemanager');
 
 function sockets(server) {
   let io = require('socket.io')(server);
@@ -24,18 +25,14 @@ function sockets(server) {
   });
 }
 function disconnected(socket){
-  var i = socketList.indexOf(socket);
-  while (i > -1) {
-    socketList.splice(i,1);
-    i = socketList.indexOf(socket);
-  }
+  GameManager.disconnected(socket);
 }
 function authorized(socket,token){
-  if (!socketList.includes(socket)) socketList.push(socket);
   setTimeout(()=>{
     socket.disconnect('Session Timed Out')
   },1000 * 60 * 60 * 6);
   socket.on('disconnect',()=>{disconnected(socket)});
+  GameManager.connected(socket);
   // END OF CONNECTION HANDLING
 
   console.log('authorized');

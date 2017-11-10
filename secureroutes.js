@@ -5,7 +5,7 @@ const secureMap = require('./secureroutes/map');
 
 const secureRoutes = express.Router();
 
-secure.use((req,res,next)=>{
+secureRoutes.use((req,res,next)=>{
   authenticateSession(req).then(session=>{
     console.log({session});
     res.locals.session = session;

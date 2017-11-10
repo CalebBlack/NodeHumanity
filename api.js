@@ -1,6 +1,7 @@
 const express = require('express');
 const Isemail = require('isemail');
 const bcrypt = require('bcrypt');
+const RateLimit = require('express-rate-limit');
 
 const {
   User, Session
@@ -15,6 +16,24 @@ const secureRoutes = require('./secureroutes');
 
 const api = express.Router();
 
+// limit request rate
+var authLimiter = new RateLimit({
+  windowMs: 60*60*1000,
+  delayAfter: 15,
+  delayMs: 3*1000,
+  max: 35,
+  message: "Too many requests from this IP"
+});
+api.use('/login',authLimiter);
+api.use('/signup',authLimiter);
+// block non-xhr requests
+api.use((req,res,next)=>{
+  if (req.xhr) {
+    res.sendFile(`${__dirname}/private/apinonxhr.html`);
+  } else {
+    next();
+  }
+});
 
 // define the home page route
 api.get('/', (req, res) => {

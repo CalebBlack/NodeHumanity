@@ -20,8 +20,6 @@ class Game extends React.Component {
     if (!socket) {
       this.initializeSocket();
     }
-    console.log('s',socket);
-
     return (
     <div id='game'>
     </div>

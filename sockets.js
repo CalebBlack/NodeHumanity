@@ -8,6 +8,7 @@ function sockets(server) {
   io.on('connection', function(socket) {
     socket.auth = false;
     socket.on('authenticate', function(data) {
+      socket.removeAllListeners("authenticate");
       let token = data.token;
       if (!token) return socket.disconnect('Unauthorized');
       Session.findOne({_id:token},(err,token)=>{
@@ -24,6 +25,9 @@ function sockets(server) {
   });
 }
 function authorized(socket,token){
+  setTimeout(()=>{
+    socket.disconnect('Session Timed out')
+  },1000 * 60 * 60 * 12);
   console.log('authorized');
 }
 module.exports = sockets;

@@ -14,15 +14,10 @@ function sockets(app){
   } else {
     next(new Error('Unauthorized'));
   }
-  // checkAuthToken(token, function(err, authorized){
-  //   if (err || !authorized) {
-  //     next(new Error("not authorized"));
-  //   }
-  //   next();
-  //   });
   });
 
   io.on('connection', function (socket) {
+    console.log('new socket connection');
   socket.on('my other event', function (data) {
     console.log(data);
   });

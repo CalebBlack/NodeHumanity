@@ -3,7 +3,7 @@ const Isemail = require('isemail');
 const bcrypt = require('bcrypt');
 
 const {
-  User
+  User, Session
 } = require('./models');
 const validate = require('./functions/validate');
 const authenticateRequest = require('./functions/authenticaterequest');
@@ -75,6 +75,24 @@ api.get('/login', (req, res) => {
   }).catch(err=>{
     res.status(401).send('Unauthorized');
   });
+});
+
+api.get('/logout',(req,res)=>{
+  if (req.headers && req.headers.session && typeof req.headers.session == 'string' && req.headers.session.length > 0) {
+    Session.findOne({_id:req.headers.session},(err,session)=>{
+      if (err) return res.status(500).send('error');
+      if (session) {
+        session.remove(err=>{
+          if (err) return res.status(500).send('error');
+          res.status(200).send('Logout Successful');
+        })
+      } else {
+        res.status(401).send('Unauthorized');
+      }
+    })
+  } else {
+    res.status(401).send('Unauthorized');
+  }
 });
 
 module.exports = api

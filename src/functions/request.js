@@ -12,7 +12,9 @@ function request(url,method='get',options={}) {
       throw new Error('Request: Invalid Auth Formatting');
     }
   }
-
+  if (options.secure === true && localStorage.sessionID) {
+    options.headers = Object.assign(options.headers || {},{session:localStorage.sessionID});
+  }
   return new Promise(function (resolve, reject) {
     var xhr = new XMLHttpRequest();
     xhr.open(method, url);

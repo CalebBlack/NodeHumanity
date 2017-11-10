@@ -33,6 +33,7 @@
     "body-parser": "^1.18.2",
     "css-loader": "^0.28.7",
     "express": "^4.16.2",
+    "helmet": "^3.9.0",
     "isemail": "^3.0.0",
     "less": "^2.7.3",
     "less-loader": "^4.0.5",

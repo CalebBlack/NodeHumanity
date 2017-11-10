@@ -40,3 +40,10 @@ export function initialize(){
     }
   }
 }
+export function logout(){
+  return async dispatch=>{
+    await (request('/api/logout','get',{secure:true}));
+    localStorage.sessionID = null;
+    dispatch({type:setLoginStatus,loginStatus:loginStatuses.loggedOut});
+  }
+}

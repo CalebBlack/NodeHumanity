@@ -25,7 +25,7 @@ function request(url,method='get',options={}) {
       })
     }
     xhr.onload = function () {
-      if (this.status >= 200 && this.status =< 304) {
+      if (this.status >= 200 && this.status <= 304) {
         resolve(xhr.response);
       } else {
         reject({
@@ -33,7 +33,7 @@ function request(url,method='get',options={}) {
           statusText: xhr.statusText
         });
       }
-    };
+    }.bind(this);
     xhr.onerror = function () {
       reject({
         status: xhr.status,

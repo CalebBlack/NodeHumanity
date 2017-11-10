@@ -33,8 +33,8 @@ class Signup extends React.Component {
   }
   submit(){
     if (!this.password || !this.username || !this.email) return;
-    let username = this.username.value;
-    let password = this.password.value;
+    let username = this.username.value.toLowerCase();
+    let password = this.password.value.toLowerCase();
     let email = this.email.value;
     if (username.length < 1 || password.length < 1 || email.length < 5) return;
     this.props.dispatch(signup(username,password,email));

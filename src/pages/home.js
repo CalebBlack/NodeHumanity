@@ -19,7 +19,6 @@ class Home extends React.Component {
     });
     return (
       <div className='home' ref={ref=>{if (!this.state.home){this.setState({home:ref})}}}>
-        <h1 className='title'>Cards Against Humanity</h1>
         <Link to='play' className='playbanner'>Play!</Link>
         <div className='top'>
         {blackCard}

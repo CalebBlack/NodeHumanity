@@ -14,7 +14,7 @@ export function login(username,password) {
 }
 export function signup(username,password,email) {
   return dispatch=>{
-    dispatch({type:setLoginStatus,loginStatus:loginStatus.loggingIn});
+    dispatch({type:setLoginStatus,loginStatus:loginStatuses.loggingIn});
     request('/api/signup','post',{auth:[username,password],body:{email}}).then(response=>{
       dispatch({type:setLoginStatus,loginStatus:loginStatuses.loggedIn});
     }).catch(err=>{

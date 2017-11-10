@@ -18,7 +18,7 @@ api.get('/', (req, res) => {
   res.status(200).send('Cards Against Humanity API');
 });
 // define the about route
-api.post('/createuser', (req, res) => {
+api.post('/signup', (req, res) => {
   auth = decodeAuthHeaders(req);
   if (auth && auth.length == 2) {
     if (validate.username(auth[0]) && validate.password(auth[1])) {

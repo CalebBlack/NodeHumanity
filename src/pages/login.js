@@ -34,8 +34,8 @@ class Login extends React.Component {
   }
   submit(){
     if (!this.password || !this.username) return;
-    let username = this.username.value.replace(' ','');
-    let password = this.password.value.replace(' ','');
+    let username = this.username.value.toLowerCase();
+    let password = this.password.value.toLowerCase();
     if (username.length < 1 || password.length < 1) return;
     this.props.dispatch(login(username,password));
   }

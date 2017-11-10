@@ -7,7 +7,6 @@ const secureRoutes = express.Router();
 
 secureRoutes.use((req,res,next)=>{
   authenticateSession(req).then(session=>{
-    console.log({session});
     res.locals.session = session;
     next();
   }).catch(err=>{

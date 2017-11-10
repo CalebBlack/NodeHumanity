@@ -1,11 +1,13 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const helmet = require('helmet');
+const http = require('http');
 
 const api = require('./api');
 const sockets = require('./sockets');
 
 const app = express();
+const server = http.Server(app);
 
 // EXPRESS CONFIG
 app.disable('x-powered-by');
@@ -17,7 +19,7 @@ app.use(helmet.referrerPolicy({ policy: 'same-origin' }));
 
 // CUSTOM MIDDLEWARE
 app.use(function(err, req, res, next) {
-  console.error(err);
+  console.error('err',err);
   res.status(500).send('Error');
 });
 
@@ -31,6 +33,6 @@ app.use('/api',api);
 
 // OTHER
 app.use((req, res) => res.sendFile(`${__dirname}/public/index.html`));
-sockets(app);
+sockets(server);
 
-module.exports = app;
+module.exports = server;

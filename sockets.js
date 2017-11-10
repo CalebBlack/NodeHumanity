@@ -1,26 +1,32 @@
-const {Session} = require('./models');
+const {
+  Session
+} = require('./models');
 
-function sockets(app){
-  let server = require('http').createServer(app);
+function sockets(server) {
   let io = require('socket.io')(server);
 
-  io.use(function(socket, next) {
-  var token = socket.request.query.token;
-  if (token) {
-    Session.findOne({_id:token},(err,token)=>{
-      if (err || !token) return next(new Error('Unauthorized'));
-      next();
-    })
-  } else {
-    next(new Error('Unauthorized'));
-  }
-  });
+  io.on('connection', function(socket) {
+    socket.auth = false;
+    socket.on('authenticate', function(data) {
+      let token = data.token;
+      if (!token) return socket.disconnect('Unauthorized');
+      Session.findOne({_id:token},(err,token)=>{
+        if (err || !token) return next(new Error('Unauthorized'));
+        socket.auth = true;
+        authorized(socket,token);
+      })
+    });
 
-  io.on('connection', function (socket) {
-    console.log('new socket connection');
-  socket.on('my other event', function (data) {
-    console.log(data);
+    setTimeout(function() {
+      //If the socket didn't authenticate, disconnect it
+      if (!socket.auth) {
+        //console.log("Disconnecting socket ", socket.id);
+        socket.disconnect('Unauthorized');
+      }
+    }, 1000);
   });
-});
+}
+function authorized(socket,token){
+  console.log('authorized');
 }
 module.exports = sockets;

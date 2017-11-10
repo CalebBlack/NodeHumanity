@@ -27,7 +27,12 @@ function request(url,method='get',options={}) {
         statusText: xhr.statusText
       });
     };
-    xhr.send();
+    if (options.body) {
+      xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+      xhr.send(JSON.stringify(options.body));
+    } else {
+      xhr.send();
+    }
   });
 }
 export default request;

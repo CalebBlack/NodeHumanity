@@ -6,6 +6,7 @@ import {Link, Redirect} from 'react-router-dom';
 import {connect} from 'react-redux';
 import * as loginStatuses from '../redux/loginstatuses';
 import * as enforceInput from '../functions/enforceinput';
+import HomeLink from '../components/homelink';
 
 class Login extends React.Component {
   constructor(props){
@@ -21,6 +22,7 @@ class Login extends React.Component {
     var self = this;
     return (
     <form onSubmit={(e)=>{e.preventDefault();this.submit();}} className='login'>
+      <HomeLink/>
       <label htmlFor='username'>Username</label>
       <input ref={ref=>{this.username = ref;enforceInput.username(ref);}} id='username' name='username' className='username'/>
       <label htmlFor='password'>Password</label>

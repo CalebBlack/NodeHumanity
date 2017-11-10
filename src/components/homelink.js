@@ -1,9 +1,11 @@
 import React from 'react';
-import './homelink.less';
+import Back from '../icons/back';
+import {Link} from 'react-router-dom';
+import './homelink.css';
 
 class HomeLink extends React.Component {
   render(){
-    return (<div className='homelink'>homelink</div>)
+    return (<Link to='/' className='homelink'><Back/></Link>)
   }
 }
 export default HomeLink;

@@ -12,6 +12,7 @@ class Game extends React.Component {
   constructor(props) {
     super(props);
     this.initializeSocket = this.initializeSocket.bind(this);
+    //this.socketConnected = this.socketConnected.bind(this);
   }
   render(){
     if (this.props.loginStatus === null || [loginStatuses.loggingIn,loginStatuses.initializing].includes(this.props.loginStatus)) return (<Loading/>);
@@ -27,12 +28,14 @@ class Game extends React.Component {
   );
   }
   initializeSocket(){
+    let self = this;
     socket = io();
     socket.on('connect', function () {
       console.log('connected');
       socket.emit('authenticate', {token: localStorage.sessionID});
+      self.setState(Object.assign({},self.state,{connected:true}));
     }).on('disconnect', function () {
-      console.log('disconnected');
+      self.setState(Object.assign({},self.state,{connected:false}));
     });
   }
 }

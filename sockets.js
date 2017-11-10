@@ -16,11 +16,8 @@ function sockets(server) {
         authorized(socket,token);
       })
     });
-
     setTimeout(function() {
-      //If the socket didn't authenticate, disconnect it
       if (!socket.auth) {
-        //console.log("Disconnecting socket ", socket.id);
         socket.disconnect('Unauthorized');
       }
     }, 1000);

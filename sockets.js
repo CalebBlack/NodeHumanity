@@ -26,8 +26,8 @@ function sockets(server) {
 }
 function authorized(socket,token){
   setTimeout(()=>{
-    socket.disconnect('Session Timed out')
-  },1000 * 60 * 60 * 12);
+    socket.disconnect('Session Timed Out')
+  },1000 * 60 * 60 * 6);
   console.log('authorized');
 }
 module.exports = sockets;

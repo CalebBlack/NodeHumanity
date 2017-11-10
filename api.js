@@ -60,11 +60,9 @@ api.post('/signup', (req, res) => {
                 if (err) return res.status(500).send();
                 var userOut = {username:user.username,displayname:user.displayname};
                 getSession(user).then(session=>{
-                  console.log('session',session);
                   let sessionOut = {id:session._id,created:session.createdAt};
                   return res.status(200).json({user:userOut,session:sessionOut});
                 }).catch(err=>{
-                  console.log('err',err);
                   return res.status(200).json({user:userOut,session:'error'});
                 });
               })

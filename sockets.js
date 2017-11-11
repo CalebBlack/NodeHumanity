@@ -23,6 +23,7 @@ function sockets(server) {
       }
     }, 1000);
   });
+  GameManager.setup(io);
 }
 function disconnected(socket){
   GameManager.disconnected(socket);

@@ -1,5 +1,6 @@
 const {Session} = require('./models');
 var socketList = [];
+var connected = {};
 const GameManager = require('./gamemanager');
 
 function sockets(server) {
@@ -12,7 +13,11 @@ function sockets(server) {
       let token = data.token;
       if (!token) return socket.disconnect('Unauthorized');
       Session.findOne({_id:token},(err,token)=>{
-        if (err || !token) return next(new Error('Unauthorized'));
+        if (err || !token) return socket.disconnect('Unauthorized');
+        console.log(connected,token._id,connected[token._id]);
+        if (connected.hasOwnProperty(token._id)) return socket.disconnect('Already Connected');
+        console.log('allowed');
+        connected[token._id] = socket;
         socket.auth = true;
         authorized(socket,token);
       })
@@ -32,10 +37,19 @@ function authorized(socket,token){
   setTimeout(()=>{
     socket.disconnect('Session Timed Out')
   },1000 * 60 * 60 * 6);
-  socket.on('disconnect',()=>{disconnected(socket)});
+  socket.on('disconnect',()=>{disconnected(socket);delete connected[token._id]});
   GameManager.connected(socket);
   // END OF CONNECTION HANDLING
 
   console.log('authorized');
 }
-module.exports = sockets;
+function disconnect(id,reason='Disconnected'){
+  if (connected[id]) {
+    connected[id].disconnect(reason);
+    delete connected[id];
+  }
+}
+function getConnected(){
+  return connected;
+}
+module.exports = {sockets,disconnect,getConnected};

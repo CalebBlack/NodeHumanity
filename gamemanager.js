@@ -9,6 +9,13 @@ function getGameID(){
   }
   return id;
 }
+function getRoomList(resultCount=5){
+  let keys = Object.keys(gameList);
+  return keys.slice(Math.max(0,keys.length - resultCount),resultCount).map(gameNumber=>{
+    let game = gameList[gameNumber];
+    return {id:gameNumber,players:game.players.length}
+  });
+}
 class Room {
   constructor(owner){
     this.disconnected = this.disconnected.bind(this);
@@ -23,8 +30,8 @@ class Room {
     gameList[this.id] = this;
     this.roomName = 'game '+this.id;
     this.room = io.to('some room');
-    this.addPlayer(owner);
     this.runner = new GameRunner(this);
+    this.addPlayer(owner);
   }
   emit(event,data){
     this.room.emit(event,data);
@@ -87,8 +94,12 @@ function connected(socket){
       socket.emit('roomcreationfailed');
     }
   });
+  socket.on('listrooms',data=>{
+    socket.emit('roomlist',getRoomList());
+  });
 }
 function disconnected(socket) {
+  console.log('force disconnecting');
   if (inGame[socket.id]) {
     gameList[inGame[socket.id]].disconnected(socket);
   }

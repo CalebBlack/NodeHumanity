@@ -4,7 +4,7 @@ const helmet = require('helmet');
 const http = require('http');
 
 const api = require('./api');
-const sockets = require('./sockets');
+const {sockets} = require('./sockets');
 
 const app = express();
 const server = http.Server(app);

@@ -18,6 +18,7 @@ class Door extends React.Component {
     //this.socketConnected = this.socketConnected.bind(this);
   }
   render(){
+    if (this.props.loginStatus === loginStatuses.loggedOut) socket = null;
     if (this.props.loginStatus === null || [loginStatuses.loggingIn,loginStatuses.initializing].includes(this.props.loginStatus)) return (<Loading/>);
     if (this.props.loginStatus !== loginStatuses.loggedIn) return (<Redirect to='/login'/>);
     if (!socket) {
@@ -37,6 +38,7 @@ class Door extends React.Component {
       socket.emit('authenticate', {token: localStorage.sessionID});
         self.setState(Object.assign({},self.state,{connected:true}));
     }).on('disconnect', function () {
+      console.log('disconnected');
       self.setState(Object.assign({},self.state,{connected:false}));
     });
   }

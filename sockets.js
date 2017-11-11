@@ -14,9 +14,7 @@ function sockets(server) {
       if (!token) return socket.disconnect('Unauthorized');
       Session.findOne({_id:token},(err,token)=>{
         if (err || !token) return socket.disconnect('Unauthorized');
-        console.log(connected,token._id,connected[token._id]);
         if (connected.hasOwnProperty(token._id)) return socket.disconnect('Already Connected');
-        console.log('allowed');
         connected[token._id] = socket;
         socket.auth = true;
         authorized(socket,token);
@@ -40,8 +38,6 @@ function authorized(socket,token){
   socket.on('disconnect',()=>{disconnected(socket);delete connected[token._id]});
   GameManager.connected(socket);
   // END OF CONNECTION HANDLING
-
-  console.log('authorized');
 }
 function disconnect(id,reason='Disconnected'){
   if (connected[id]) {

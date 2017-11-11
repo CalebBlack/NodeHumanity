@@ -1,3 +1,4 @@
+const GameRunner = require('./gamerunner');
 var io = null;
 var gameList = {};
 var inGame = {};
@@ -23,6 +24,7 @@ class Room {
     this.roomName = 'game '+this.id;
     this.room = io.to('some room');
     this.addPlayer(owner);
+    this.runner = new GameRunner(this);
   }
   emit(event,data){
     this.room.emit(event,data);
@@ -32,6 +34,7 @@ class Room {
     this.players.forEach(socket=>{
       this.removePlayer(socket);
     });
+    this.runner.destroy();
   }
   disconnected(socket){
     this.emit('playerleft',socket.id);
@@ -45,6 +48,7 @@ class Room {
     socket.on('disconnect',()=>{self.removePlayer(socket)});
     this.players.push(socket);
     this.emit('playerjoin',socket.id);
+    this.runner.connected(socket);
   }
   removePlayer(socket){
     let index = this.players.indexOf(socket);
@@ -52,6 +56,7 @@ class Room {
     delete inGame[socket.id];
     socket.leave(this.roomName);
     if (this.players.length < 1) this.destroy();
+    this.runner.disconnected(socket);
   }
   // getPlayers(){
   //   console.log('p',io.sockets.in(this.roomName));

@@ -6,6 +6,8 @@ import {Redirect} from 'react-router-dom';
 import {connect} from 'react-redux';
 import Game from './game';
 import * as loginStatuses from '../redux/loginstatuses';
+import socketioWildcard from 'socketio-wildcard';
+const patch = socketioWildcard(io.Manager);
 
 var socket = null;
 
@@ -26,10 +28,14 @@ class Door extends React.Component {
   initializeSocket(){
     let self = this;
     socket = io();
+    patch(socket);
     socket.on('connect', function () {
+      socket.on('*', function(data){
+        console.log('event:','"'+data.data[0]+'"','data:',data.data[1]);
+      });
       console.log('connected');
       socket.emit('authenticate', {token: localStorage.sessionID});
-      self.setState(Object.assign({},self.state,{connected:true}));
+        self.setState(Object.assign({},self.state,{connected:true}));
     }).on('disconnect', function () {
       self.setState(Object.assign({},self.state,{connected:false}));
     });

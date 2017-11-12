@@ -1,3 +1,9 @@
+try {
+  const cards = require('./public/cards.json');
+} catch (error) {
+  throw new Error('Cannot Start, Missing/Invalid Card List');
+}
+
 const app = require('./app');
 const stringToInt = require('./functions/stringtoint');
 const fs = require('fs');
@@ -11,12 +17,6 @@ if (port === null) {
 
 if (!fs.existsSync('./build/source.js')) throw new Error('Source Not Built! Type "npm run build"');
 
-
-try {
-  const cards = require('./public/cards.json');
-} catch (error) {
-  throw new Error('Cannot Start, Missing/Invalid Card List');
-}
 
 app.listen(port,err=>{
   if (err) throw err;

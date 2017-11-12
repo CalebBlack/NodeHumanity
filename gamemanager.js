@@ -9,7 +9,7 @@ function getGameID(){
   }
   return id;
 }
-function getRoomList(resultCount=5){
+function getRoomList(resultCount=100){
   let keys = Object.keys(gameList);
   var output = [];
   for (var i = keys.length - 1; i > -1 && output.length < resultCount; i++) {

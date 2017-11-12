@@ -42,8 +42,8 @@
   .inner {
     width: ~"calc(100% - 100px)";
     max-width: ~"calc(100% - 100px)";
-    height: ~'calc(100% - 140px)';
-    max-height: ~'calc(100% - 140px)';
+    height: ~'calc(100% - 155px)';
+    max-height: ~'calc(100% - 155px)';
   }
   .chatbox {
     padding: 5px 30px;
@@ -64,14 +64,51 @@
       outline:0;
     }
     .messages {
+      max-height: 80%;
+      height:80%;
+      margin-bottom: 5px !important;
       width: 100%;
       max-width: 100%;
       margin: 0;
       padding: 0;
-      height: 80%;
-      max-height: 80%;
       overflow-x: hidden;
       overflow-y: auto;
+      color: #e0e0e0;
+      & > * {
+        height: unset;
+        max-height: unset;
+        display: inline-block;
+        vertical-align: top;
+        margin: 0;
+      }
+      .senders {
+        min-width: 10px;
+        width: 80px;
+        max-width: 80px;
+        overflow-x:auto;
+        overflow-y:visible;
+        .sender {
+          display: block;
+          width: 100%;
+          max-height: 20px;
+        }
+      }
+      .messages {
+        margin: 0;
+        max-width: ~'calc(100% - 80px)';
+        .text {
+          width: 100%;
+          margin: 0;
+          display: block;
+          max-height: 40px;
+          overflow: hidden;
+        }
+        .spacer {
+          height:3px;
+          min-height: 3px;
+          max-height: 3px;
+        }
+      }
     }
     .sendmessage {
       font-size: 0.9em;
@@ -83,8 +120,13 @@
       max-height:20px;
       border: none;
       background-color: #ffffff75;
+      // position: fixed;
+      // bottom: 5px;
     }
     .send {
+      // position: fixed;
+      // bottom: 5px;
+      // right: 32px;
       cursor: pointer;
       width: 58px;
       padding: 0 10px;

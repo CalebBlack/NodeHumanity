@@ -111,6 +111,16 @@ function connected(socket){
       socket.emit('leaveroomfailed');
     }
   });
+  socket.on('sendchat',message=>{
+    if (typeof message == 'string' && message.length > 0) {
+      if (inGame[socket.id]) {
+        let game = gameList[inGame[socket.id]];
+        if (game) {
+          game.emit('chatmessage',{sender:socket.user.username,message});
+        }
+      }
+    }
+  })
   socket.on('createroom',data=>{
     if (!inGame[socket.id]) {
       let room = new Room(socket);
@@ -124,7 +134,6 @@ function connected(socket){
   });
 }
 function disconnected(socket) {
-  console.log('force disconnecting');
   if (inGame[socket.id]) {
     let game = gameList[inGame[socket.id]];
     if (game) {

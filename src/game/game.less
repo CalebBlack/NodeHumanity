@@ -1,0 +1,29 @@
+#game {
+  .statusbar {
+    position: absolute;
+    top: 0;
+    left: 5px;
+    * {
+      display: block;
+      margin: 10px 0;
+    }
+    span {
+      padding: 4px;
+      background-color: white;
+      border-radius: 4px;
+    }
+    button {
+      padding: 5px 10px;
+      font-size: 1em;
+      border: none;
+      cursor: pointer;
+      outline: none;
+      transition: background-color 0.4s linear;
+      &:hover {
+        background-color: #dadada;
+        transition: background-color 0.2s linear;
+      }
+    }
+  }
+
+}

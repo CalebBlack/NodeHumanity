@@ -6,6 +6,7 @@ class Manager extends React.Component {
   constructor(props){
     super(props);
     this.state = {location:'lobby'};
+    this.leftRoom = this.leftRoom.bind(this);
   }
   componentDidMount(){
     let onJoin = room=>{
@@ -13,6 +14,10 @@ class Manager extends React.Component {
     };
     this.props.socket.on('roomcreated',onJoin);
     this.props.socket.on('roomjoined',onJoin);
+    this.props.socket.on('leftroom',this.leftRoom);
+  }
+  leftRoom(){
+    this.setState(Object.assign({},this.state,{location:'lobby'}));
   }
   render(){
     if (this.state.location === 'lobby') {
@@ -25,5 +30,8 @@ class Manager extends React.Component {
     console.log('gamesocket',this.props.socket);
     return (<p>game</p>)
   }
+  // leaveGame(){
+  //   this.setState(Object.assign({},this.state,{location:'lobby'}));
+  // }
 }
 export default Manager;

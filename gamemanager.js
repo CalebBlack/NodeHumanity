@@ -9,6 +9,9 @@ function getGameID(){
   }
   return id;
 }
+function getNames(socket){
+  return {username:socket.user.username,displayname:socket.user.displayname};
+}
 function getRoomList(resultCount=100){
   let keys = Object.keys(gameList);
   var output = [];
@@ -62,7 +65,7 @@ class Room {
     //console.log('add plahyer');
     socket.on('disconnect',()=>{self.disconnected(socket)});
     this.players.push(socket);
-    this.emit('playerjoin',socket.user.displayname);
+    this.emit('playerjoin',getNames(socket));
     this.runner.connected(socket);
   }
   removePlayer(socket){
@@ -71,7 +74,7 @@ class Room {
     delete inGame[socket.id];
     socket.leave(this.roomName);
     if (this.players.length < 1) this.destroy();
-    this.emit('playerleft',socket.user.displayname);
+    this.emit('playerleft',getNames(socket));
     this.runner.disconnected(socket);
   }
   // getPlayers(){
@@ -80,7 +83,7 @@ class Room {
   // }
 }
 function playerList(room) {
-  return gameList[room].players.map(socket=>{return socket.user.displayname});
+  return gameList[room].players.map(socket=>{return getNames(socket)});
 }
 function connected(socket){
   socket.on('joinroom',data=>{
@@ -101,7 +104,7 @@ function connected(socket){
     }
   })
   socket.on('leaveroom',data=>{
-    if (inGame.hasOwnProperty(socket.id)) {
+    if (inGame[socket.id]&& gameList[inGame[socket.id]]) {
       gameList[inGame[socket.id]].removePlayer(socket);
       socket.emit('leftroom');
     } else {

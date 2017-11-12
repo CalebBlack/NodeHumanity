@@ -5,14 +5,19 @@ import './lobby.less';
 class Lobby extends React.Component {
   constructor(props){
     super(props);
+    this.onRoomList = this.onRoomList.bind(this);
     this.state = {roomList:[]};
   }
   componentDidMount(){
     if (!this.props || !this.props.socket) return null;
     this.props.socket.emit('listrooms');
-    this.props.socket.on('roomlist',roomList=>{
+    this.props.socket.on('roomlist',this.onRoomList);
+  }
+  componentWillUnmount(){
+    this.props.socket.removeListener('roomlist',this.onRoomList);
+  }
+  onRoomList(roomList){
       this.setState(Object.assign({},this.state,{roomList}));
-    });
   }
   render(){
     if (!this.props || !this.props.socket) return null;

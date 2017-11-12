@@ -1,6 +1,16 @@
 import React from 'react';
 import './game.less';
 
+function playerIndex(players,username){
+  var index = null;
+  for (var i = 0; i < players.length && index === null; i++) {
+    if (players[i].username === username) {
+      index = i;
+    }
+  }
+  return index;
+}
+
 class Game extends React.Component {
   constructor(props){
     super(props);
@@ -21,20 +31,21 @@ class Game extends React.Component {
     this.props.socket.removeListener('playerjoin',this.onPlayerJoin);
     this.props.socket.removeListener('playerleft',this.onPlayerLeave);
   }
-  onPlayerJoin(playerID){
-    if (!this.state.players.includes(playerID)) {
+  onPlayerJoin(player){
+    let index = playerIndex(this.state.players,player.username);
+    if (!index) {
       let newPlayers = this.state.players.slice(0);
-      newPlayers.push(playerID);
+      newPlayers.push(player);
       this.setState(Object.assign({},this.state,{players:newPlayers}));
     }
   }
   onPlayerList(playerList){
     this.setState(Object.assign({},this.state,{players:playerList}));
   }
-  onPlayerLeave(playerID){
-    if (this.state.players.includes(playerID)) {
+  onPlayerLeave(player){
+    let index = playerIndex(this.state.players,player.username);
+    if (index) {
       let newPlayers = this.state.players.slice(0);
-      let index = this.state.players.indexOf(playerID);
       newPlayers.splice(index,1);
       this.setState(Object.assign({},this.state,{players:newPlayers}));
     }
@@ -49,6 +60,11 @@ class Game extends React.Component {
         </div>
         <div className='inner'>
 
+        </div>
+        <div className='chatbox'>
+          <ul className='messages'>
+          </ul>
+          <input className='sendmessage'/><button className='send'>Send</button>
         </div>
       </div>
     );

@@ -1,4 +1,4 @@
-const {Session} = require('./models');
+const {Session,User} = require('./models');
 var socketList = [];
 var connected = {};
 const GameManager = require('./gamemanager');
@@ -15,9 +15,14 @@ function sockets(server) {
       Session.findOne({_id:token},(err,token)=>{
         if (err || !token) return socket.disconnect('Unauthorized');
         if (connected.hasOwnProperty(token._id)) return socket.disconnect('Already Connected');
-        connected[token._id] = socket;
-        socket.auth = true;
-        authorized(socket,token);
+        User.findOne({username:token.owner},(err,user)=>{
+          if (err || !user) return socket.disconnect('Invalid User');
+          connected[token._id] = socket;
+          socket.token = token;
+          socket.user = user;
+          socket.auth = true;
+          authorized(socket,token);
+        });
       })
     });
     setTimeout(function() {

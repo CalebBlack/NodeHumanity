@@ -5,7 +5,11 @@ function drawCard(black=false){
   return cards[color][randomBetween(0,cards[color].length -1)];
 }
 function drawHand(){
-
+  var output = [];
+  for (var i = 0; i < 10; i++){
+    output.push(drawCard(false));
+  }
+  return output;
 }
 
 class GameRunner {
@@ -41,6 +45,9 @@ class GameRunner {
     this.started = true;
     this.emit('gamestarting');
     this.interval = setInterval(this.round,1000);
+    this.room.players.forEach(socket=>{
+      this.hands[socket.id] = drawHand();
+    });
   }
   destroy(){
     if (this.interval) this.interval = clearInterval(this.interval);

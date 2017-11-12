@@ -6,6 +6,7 @@ class Card extends React.Component {
     return (
       <div className={'card '+this.props.color}>
         <p className='text' dangerouslySetInnerHTML={{__html:this.props.text}}></p>
+        {this.props.children || null}
       </div>
     )
   }

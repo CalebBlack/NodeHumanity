@@ -72,8 +72,9 @@ class Room {
 }
 function connected(socket){
   socket.on('joinroom',data=>{
-    if (typeof data == 'number' && !inGame.hasOwnProperty(socket.id) && gameList[data]) {
+    if (typeof data == 'string' && !inGame[socket.id] && !!gameList[data]) {
       gameList[data].addPlayer(socket);
+      socket.emit('roomjoined',data);
     } else {
       socket.emit('joinroomfailed');
     }

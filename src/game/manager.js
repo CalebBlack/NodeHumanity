@@ -7,11 +7,18 @@ class Manager extends React.Component {
     super(props);
     this.state = {location:'lobby'};
   }
+  componentDidMount(){
+    let onJoin = room=>{
+      this.setState(Object.assign({},this.state,{location:'inGame',room}));
+    };
+    this.props.socket.on('roomcreated',onJoin);
+    this.props.socket.on('roomjoined',onJoin);
+  }
   render(){
     if (this.state.location === 'lobby') {
       return(<Lobby manager={this} socket={this.props.socket}/>);
     } else if (this.state.location === 'inGame') {
-      return(<Game manager={this}/>);
+      return(<Game manager={this} socket={this.props.socket} room={this.state.room}/>);
     } else {
       return null;
     }

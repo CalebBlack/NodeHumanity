@@ -20,7 +20,7 @@ class Lobby extends React.Component {
     return (
       <div id='lobby' className='lobby'>
         <div className='roomlist'>
-          {this.state.roomList.length > 0 ? this.state.roomList.map((room,index)=>{return (<Room key={index} data={room}/>)}): <span className='empty'>No Open Rooms</span>}
+          {this.state.roomList.length > 0 ? this.state.roomList.map((room,index)=>{return (<Room socket={this.props.socket} key={index} data={room}/>)}): <span className='empty'>No Open Rooms</span>}
         </div>
         <div className='controlbar'>
         <button className='refresh' onClick={()=>{this.props.socket.emit('listrooms')}}>Refresh</button>
@@ -33,10 +33,15 @@ class Lobby extends React.Component {
 class Room extends React.Component {
   render(){
     return (
-      <Card text={
+      /*text={
         '<h3>#'+this.props.data.id+'</h3><br/>'+
         'Players: '+this.props.data.players
-      }/>
+      }*/
+      <Card>
+        <h3>#{this.props.data.id}</h3>
+        <span>Players: {this.props.data.players}</span>
+        <button onClick={()=>{this.props.socket.emit('joinroom',this.props.data.id)}}>Join</button>
+      </Card>
     )
   }
 }

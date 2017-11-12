@@ -70,11 +70,15 @@ class Room {
   //   return io.sockets.in(this.roomName);
   // }
 }
+function playerList(room) {
+  return gameList[room].players.map(socket=>{return socket.id});
+}
 function connected(socket){
   socket.on('joinroom',data=>{
     if (typeof data == 'string' && !inGame[socket.id] && !!gameList[data]) {
       gameList[data].addPlayer(socket);
       socket.emit('roomjoined',data);
+      socket.emit('playerlist',playerList(data));
     } else {
       socket.emit('joinroomfailed');
     }
@@ -91,6 +95,7 @@ function connected(socket){
     if (!inGame[socket.id]) {
       let room = new Room(socket);
       socket.emit('roomcreated',room.id);
+      socket.emit('playerlist',playerList(room.id));
     } else {
       socket.emit('roomcreationfailed');
     }

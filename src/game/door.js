@@ -4,7 +4,7 @@ import Background from '../components/background';
 import Loading from '../components/loading';
 import {Redirect} from 'react-router-dom';
 import {connect} from 'react-redux';
-import Game from './game';
+import Manager from './manager';
 import * as loginStatuses from '../redux/loginstatuses';
 import socketioWildcard from 'socketio-wildcard';
 const patch = socketioWildcard(io.Manager);
@@ -24,7 +24,7 @@ class Door extends React.Component {
     if (!socket) {
       this.initializeSocket();
     }
-    return (<Game socket={socket}/>);
+    return (<Manager socket={socket}/>);
   }
   initializeSocket(){
     let self = this;

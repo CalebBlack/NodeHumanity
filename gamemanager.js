@@ -44,7 +44,6 @@ class Room {
     this.runner.destroy();
   }
   disconnected(socket){
-    this.emit('playerleft',socket.id);
     this.removePlayer(socket);
   }
   addPlayer(socket){
@@ -52,7 +51,8 @@ class Room {
     let self = this;
     inGame[socket.id] = this.id;
     socket.join(this.roomName);
-    socket.on('disconnect',()=>{self.removePlayer(socket)});
+    console.log('add plahyer');
+    socket.on('disconnect',()=>{self.disconnected(socket)});
     this.players.push(socket);
     this.emit('playerjoin',socket.id);
     this.runner.connected(socket);
@@ -63,6 +63,7 @@ class Room {
     delete inGame[socket.id];
     socket.leave(this.roomName);
     if (this.players.length < 1) this.destroy();
+    this.emit('playerleft',socket.id);
     this.runner.disconnected(socket);
   }
   // getPlayers(){
@@ -110,7 +111,10 @@ function connected(socket){
 function disconnected(socket) {
   console.log('force disconnecting');
   if (inGame[socket.id]) {
-    gameList[inGame[socket.id]].disconnected(socket);
+    let game = gameList[inGame[socket.id]];
+    if (game) {
+      game.disconnected(socket);
+    }
   }
 }
 function setup(server) {

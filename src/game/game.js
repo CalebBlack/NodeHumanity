@@ -19,6 +19,7 @@ class Game extends React.Component {
     this.onPlayerJoin = this.onPlayerJoin.bind(this);
     this.printMessage = this.printMessage.bind(this);
     this.printPlayers = this.printPlayers.bind(this);
+    this.renderInner = this.renderInner.bind(this);
     this.chatSubmit = this.chatSubmit.bind(this);
     this.leave = this.leave.bind(this);
     this.onChatMessage = this.onChatMessage.bind(this);
@@ -79,7 +80,6 @@ class Game extends React.Component {
     }
   }
   render(){
-    console.log('m',this.state.messages);
     return(
       <div id='game'>
         <div className='statusbar'>
@@ -88,7 +88,7 @@ class Game extends React.Component {
           <button className='leave' onClick={this.leave}>Leave</button>
         </div>
         <div className='inner'>
-
+          {this.renderInner()}
         </div>
         <div className='chatbox'>
           <div ref={ref=>{this.messageBox = ref;}} className='messages'>
@@ -112,6 +112,11 @@ class Game extends React.Component {
         </div>
       </div>
     );
+  }
+  renderInner(){
+    return (
+      <p>hi</p>
+    )
   }
   chatSubmit(){
     if (this.input) {

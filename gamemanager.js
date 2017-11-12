@@ -1,4 +1,5 @@
 const GameRunner = require('./gamerunner');
+const filterChat = require('./filterchat');
 var io = null;
 var gameList = {};
 var inGame = {};
@@ -112,7 +113,8 @@ function connected(socket){
     }
   });
   socket.on('sendchat',message=>{
-    if (typeof message == 'string' && message.length > 0) {
+    message = message.trim();
+    if (typeof message == 'string' && message.length > 0 && filterChat(message) === false) {
       if (inGame[socket.id]) {
         let game = gameList[inGame[socket.id]];
         if (game) {

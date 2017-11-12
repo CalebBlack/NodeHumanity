@@ -2,7 +2,7 @@ const anchorme = require('anchorme').default;
 const bannedWords = require('./bannedwords.json');
 module.exports = function filterChat(message){
   var lowercase = message.toLowerCase();
-  var nospace = lowercase.replace(' ','');
+  var nospace = lowercase.replace(/ /g,'')
   for (var i = 0; i < bannedWords.length; i++) {
     if (nospace.includes(bannedWords[i])) return true;
   }

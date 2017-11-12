@@ -78,11 +78,15 @@ function connected(socket){
     if (typeof data == 'string' && !inGame[socket.id] && !!gameList[data]) {
       gameList[data].addPlayer(socket);
       socket.emit('roomjoined',data);
-      socket.emit('playerlist',playerList(data));
     } else {
       socket.emit('joinroomfailed');
     }
   });
+  socket.on('getplayers',()=>{
+    if (inGame[socket.id]) {
+      socket.emit('playerlist',playerList(inGame[socket.id]));
+    }
+  })
   socket.on('leaveroom',data=>{
     if (inGame.hasOwnProperty(socket.id)) {
       gameList[inGame[socket.id]].removePlayer(socket);
@@ -95,7 +99,6 @@ function connected(socket){
     if (!inGame[socket.id]) {
       let room = new Room(socket);
       socket.emit('roomcreated',room.id);
-      socket.emit('playerlist',playerList(room.id));
     } else {
       socket.emit('roomcreationfailed');
     }

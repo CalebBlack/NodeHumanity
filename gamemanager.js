@@ -11,10 +11,18 @@ function getGameID(){
 }
 function getRoomList(resultCount=5){
   let keys = Object.keys(gameList);
-  return keys.slice(Math.max(0,keys.length - resultCount),resultCount).map(gameNumber=>{
-    let game = gameList[gameNumber];
-    return {id:gameNumber,players:game.players.length}
-  });
+  var output = [];
+  for (var i = keys.length - 1; i > -1 && output.length < resultCount; i++) {
+    let game = gameList[keys[i]];
+    if (game.runner.started === false) {
+      output.push({id:game.id,players:game.players.length});
+    }
+  }
+  return output;
+  // return keys.slice(Math.max(0,keys.length - resultCount),resultCount).map(gameNumber=>{
+  //   let game = gameList[gameNumber];
+  //   return {id:gameNumber,players:game.players.length}
+  // });
 }
 class Room {
   constructor(owner){
@@ -51,7 +59,7 @@ class Room {
     let self = this;
     inGame[socket.id] = this.id;
     socket.join(this.roomName);
-    console.log('add plahyer');
+    //console.log('add plahyer');
     socket.on('disconnect',()=>{self.disconnected(socket)});
     this.players.push(socket);
     this.emit('playerjoin',socket.id);
@@ -76,7 +84,7 @@ function playerList(room) {
 }
 function connected(socket){
   socket.on('joinroom',data=>{
-    if (typeof data == 'string' && !inGame[socket.id] && !!gameList[data]) {
+    if (typeof data == 'string' && !inGame[socket.id] && gameList[data] && gameList[data].runner.started === false) {
       gameList[data].addPlayer(socket);
       socket.emit('roomjoined',data);
     } else {

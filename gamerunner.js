@@ -3,22 +3,37 @@ class GameRunner {
     this.disconnected = this.disconnected.bind(this);
     this.connected = this.connected.bind(this);
     this.destroy = this.destroy.bind(this);
+    this.start = this.start.bind(this);
     this.tick = this.tick.bind(this);
+    this.checkStart = this.checkStart.bind(this);
+    this.started = false;
     this.room = room;
-    this.interval = setInterval(this.tick,1000);
+    this.emit = this.room.emit;
   }
   tick(){
-    console.log('tick');
-  }
-  disconnected(socket){
-    
-  }
-  connected(socket) {
 
   }
+  disconnected(socket){
+
+  }
+  connected(socket) {
+    this.checkStart();
+  }
+  checkStart(){
+    if (!this.started) {
+      if (this.room.players.length > 2) {
+        this.start();
+      }
+    }
+  }
+  start(){
+    this.started = true;
+    this.emit('gamestarting');
+    this.interval = setInterval(this.tick,1000);
+    this.cardCzarOrder = this.room.players
+  }
   destroy(){
-    clearInterval(this.interval);
-    delete this.interval;
+    if (this.interval) this.interval = clearInterval(this.interval);
   }
 }
 module.exports = GameRunner;

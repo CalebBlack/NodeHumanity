@@ -2,6 +2,7 @@ import React from 'react';
 import './home.less';
 import Card from '../components/card';
 import {connect} from 'react-redux';
+import setHeaderDisplay from '../redux/actions/setheaderdisplay';
 import {Link} from 'react-router-dom';
 import randomBetween from '../functions/randombetween';
 
@@ -9,6 +10,12 @@ class Home extends React.Component {
   constructor(props){
     super(props);
     this.state = {};
+  }
+  componentWillMount(){
+    this.props.dispatch(setHeaderDisplay('normal'));
+  }
+  componentWillUnmount(){
+    this.props.dispatch(setHeaderDisplay('small'));
   }
   render() {
     if (this.props.blackCards === undefined || this.props.blackCards === null || this.props.whiteCards === undefined || this.props.whiteCards === null ) return null;

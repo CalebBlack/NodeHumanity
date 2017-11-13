@@ -1,12 +1,13 @@
 import React from 'react';
 import LogoutButton from './logoutbutton';
+import {connect} from 'react-redux';
 import './header.less';
 
 class Header extends React.Component {
   render(){
-    console.log('h',this.props.location.pathname);
+    let display = this.props && this.props.display ? this.props.display : 'normal';
     return (
-      <header id='header'>
+      <header className={display} id='header'>
         <LogoutButton/>
         <h1 className='title'>Sxuanch</h1>
       </header>
@@ -14,4 +15,6 @@ class Header extends React.Component {
   }
 }
 
-export default Header;
+export default connect(state=>{
+  return {display:state.headerDisplay}
+})(Header);

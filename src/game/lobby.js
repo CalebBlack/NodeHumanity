@@ -1,5 +1,7 @@
 import React from 'react';
 import Card from '../components/card';
+import setHeaderDisplay from '../redux/actions/setheaderdisplay';
+import {connect} from 'react-redux';
 import './lobby.less';
 
 class Lobby extends React.Component {
@@ -9,6 +11,7 @@ class Lobby extends React.Component {
     this.state = {roomList:[]};
   }
   componentDidMount(){
+    this.props.dispatch(setHeaderDisplay('small'));
     if (!this.props || !this.props.socket) return null;
     this.props.socket.emit('listrooms');
     this.props.socket.on('roomlist',this.onRoomList);
@@ -50,4 +53,4 @@ class Room extends React.Component {
     )
   }
 }
-export default Lobby;
+export default connect()(Lobby);

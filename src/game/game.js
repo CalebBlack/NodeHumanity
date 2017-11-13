@@ -1,4 +1,7 @@
 import React from 'react';
+import setHeaderDisplay from '../redux/actions/setheaderdisplay';
+import {connect} from 'react-redux';
+
 import './game.less';
 
 function playerIndex(players,username){
@@ -25,13 +28,14 @@ class Game extends React.Component {
     this.onChatMessage = this.onChatMessage.bind(this);
     this.state = {players:[],messages:[],started:false};
   }
-  componentDidMount(){
+  componentWillMount(){
     this.props.socket.on('playerlist',this.onPlayerList);
     this.props.socket.on('playerjoin',this.onPlayerJoin);
     this.props.socket.on('playerleft',this.onPlayerLeave);
     this.props.socket.on('chatmessage',this.onChatMessage);
     this.props.socket.on('gamestarting',this.onGameStart);
     this.props.socket.emit('getplayers');
+    this.props.dispatch(setHeaderDisplay('none'));
   }
   componentWillUnmount(){
     this.props.socket.removeListener('playerlist',this.onPlayerList);
@@ -136,4 +140,4 @@ class Game extends React.Component {
     this.props.socket.emit('leaveroom');
   }
 }
-export default Game;
+export default connect()(Game);

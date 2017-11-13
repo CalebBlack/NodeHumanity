@@ -1,6 +1,6 @@
 import * as actionTypes from './actiontypes';
 import * as loginStatuses from './loginstatuses';
-const initialState = {loggedIn:false,loginStatus:loginStatuses.uninitialized};
+const initialState = {loggedIn:false,loginStatus:loginStatuses.uninitialized,headerDisplay:'normal'};
 
 function reducer(state, action) {
   if (typeof state === 'undefined') {
@@ -11,6 +11,8 @@ function reducer(state, action) {
       return Object.assign({},state,{loggedIn:action.loginStatus === loginStatuses.loggedIn, loginStatus:action.loginStatus});
     case actionTypes.setCardDatabase:
       return Object.assign({},state,{cards:action.cards,blackCards:action.cards.blackCards,whiteCards:action.cards.whiteCards});
+    case actionTypes.setHeaderDisplay:
+      return Object.assign({},state,{headerDisplay:action.display});
     default:
       return state;
   }

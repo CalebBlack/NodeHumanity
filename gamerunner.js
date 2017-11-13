@@ -22,14 +22,17 @@ class GameRunner {
     this.start = this.start.bind(this);
     this.drawAll = this.drawAll.bind(this);
     this.round = this.round.bind(this);
-    this.roundLimit = 1000;
+    this.roundTimeLimit = 10000;
     this.checkStart = this.checkStart.bind(this);
     this.started = false;
     this.room = room;
     this.emit = this.room.emit;
     this.hands = {};
+    this.selections = {};
   }
   round(){
+    this.selections = {};
+    this.emit('newround',drawCard(true));
     this.drawAll();
   }
   drawAll(){
@@ -42,7 +45,7 @@ class GameRunner {
   }
   nextRound(){
     clearInterval(this.interval);
-    this.interval = setInterval(this.round,this.roundLimit);
+    this.interval = setInterval(this.round,this.roundTimeLimit);
     this.round();
   }
   disconnected(socket){
@@ -50,10 +53,13 @@ class GameRunner {
   }
   connected(socket) {
     this.checkStart();
+    socket.on('choosecard',id=>{
+
+    });
   }
   checkStart(){
     if (!this.started) {
-      if (this.room.players.length >= minimumPlayers) {
+      if (Object.keys(this.room.players).length >= minimumPlayers) {
         this.start();
       }
     }
@@ -61,8 +67,8 @@ class GameRunner {
   start(){
     this.started = true;
     this.emit('gamestarting');
-    this.interval = setInterval(this.round,this.roundLimit);
-    this.room.players.forEach(socket=>{
+    this.interval = setInterval(this.round,this.roundTimeLimit);
+    Object.values(this.room.players).forEach(socket=>{
       this.hands[socket.id] = drawHand();
       socket.emit('startinghand',this.hands[socket.id]);
     });

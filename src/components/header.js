@@ -7,7 +7,7 @@ class Header extends React.Component {
     return (
       <header id='header'>
         <LogoutButton/>
-        <h1 className='title'>Cards Against Humanity</h1>
+        <h1 className='title'>Sxuanch</h1>
       </header>
     );
   }

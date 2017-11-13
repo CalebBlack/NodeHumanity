@@ -23,13 +23,14 @@ class Game extends React.Component {
     this.chatSubmit = this.chatSubmit.bind(this);
     this.leave = this.leave.bind(this);
     this.onChatMessage = this.onChatMessage.bind(this);
-    this.state = {players:[],messages:[]};
+    this.state = {players:[],messages:[],started:false};
   }
   componentDidMount(){
     this.props.socket.on('playerlist',this.onPlayerList);
     this.props.socket.on('playerjoin',this.onPlayerJoin);
     this.props.socket.on('playerleft',this.onPlayerLeave);
     this.props.socket.on('chatmessage',this.onChatMessage);
+    this.props.socket.on('gamestarting',this.onGameStart);
     this.props.socket.emit('getplayers');
   }
   componentWillUnmount(){
@@ -37,6 +38,10 @@ class Game extends React.Component {
     this.props.socket.removeListener('playerjoin',this.onPlayerJoin);
     this.props.socket.removeListener('playerleft',this.onPlayerLeave);
     this.props.socket.removeListener('chatmessage',this.onChatMessage);
+    this.props.socket.removeListener('gamestarting',this.onGameStart);
+  }
+  onGameStart(){
+    this.setState(Object.assign({},this.state,{started:true}));
   }
   onPlayerJoin(player){
     let index = playerIndex(this.state.players,player.username);

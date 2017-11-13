@@ -56,7 +56,7 @@ class Room {
     this.runner.destroy();
   }
   disconnected(socket){
-    this.removePlayer(socket);
+    this.removePlayer(socket.id);
   }
   addPlayer(socket){
     if (inGame[socket.id]) throw new Error('Cannot Add Player: Already in Game.');
@@ -71,6 +71,7 @@ class Room {
   }
   removePlayer(socketID){
     let socket = this.players[socketID];
+    if (!socket) return;
     delete this.players[socket.id];
     delete inGame[socket.id];
     socket.leave(this.roomName);

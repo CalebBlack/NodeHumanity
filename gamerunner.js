@@ -1,8 +1,10 @@
 const cards = require('./public/cards.json');
 const randomBetween = require('./functions/randombetween');
+const minimumPlayers = 1;
+
 function drawCard(black=false){
   let color = black !== true ? 'whiteCards' : 'blackCards';
-  return cards[color][randomBetween(0,cards[color].length -1)];
+  return randomBetween(0,cards[color].length -1);
 }
 function drawHand(){
   var output = [];
@@ -18,7 +20,9 @@ class GameRunner {
     this.connected = this.connected.bind(this);
     this.destroy = this.destroy.bind(this);
     this.start = this.start.bind(this);
+    this.drawAll = this.drawAll.bind(this);
     this.round = this.round.bind(this);
+    this.roundLimit = 1000;
     this.checkStart = this.checkStart.bind(this);
     this.started = false;
     this.room = room;
@@ -26,7 +30,20 @@ class GameRunner {
     this.hands = {};
   }
   round(){
-
+    this.drawAll();
+  }
+  drawAll(){
+    Object.entries(this.hands).forEach(handPair=>{
+      let hand = handPair[1];
+      let card = drawCard(false);
+      hand.push(card);
+      this.room.players[handPair[0]].emit('drewCard',card);
+    });
+  }
+  nextRound(){
+    clearInterval(this.interval);
+    this.interval = setInterval(this.round,this.roundLimit);
+    this.round();
   }
   disconnected(socket){
 
@@ -36,7 +53,7 @@ class GameRunner {
   }
   checkStart(){
     if (!this.started) {
-      if (this.room.players.length > 2) {
+      if (this.room.players.length >= minimumPlayers) {
         this.start();
       }
     }
@@ -44,9 +61,10 @@ class GameRunner {
   start(){
     this.started = true;
     this.emit('gamestarting');
-    this.interval = setInterval(this.round,1000);
+    this.interval = setInterval(this.round,this.roundLimit);
     this.room.players.forEach(socket=>{
       this.hands[socket.id] = drawHand();
+      socket.emit('startinghand',this.hands[socket.id]);
     });
   }
   destroy(){

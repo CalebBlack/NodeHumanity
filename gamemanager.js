@@ -19,7 +19,7 @@ function getRoomList(resultCount=100){
   for (var i = keys.length - 1; i > -1 && output.length < resultCount; i--) {
     let game = gameList[keys[i]];
     if (game.runner.started === false) {
-      output.push({id:game.id,players:game.players.length});
+      output.push({id:game.id,players:Object.keys(game.players).length});
     }
   }
   return output;
@@ -34,10 +34,11 @@ class Room {
     this.destroy = this.destroy.bind(this);
     this.addPlayer = this.addPlayer.bind(this);
     this.removePlayer = this.removePlayer.bind(this);
+    this.getPlayer = this.getPlayer.bind(this);
     //this.getPlayers = this.getPlayers.bind(this);
     this.emit = this.emit.bind(this);
     // END OF BINDINGS
-    this.players = [];
+    this.players = {};
     this.id = getGameID();
     gameList[this.id] = this;
     this.roomName = 'game '+this.id;
@@ -50,8 +51,8 @@ class Room {
   }
   destroy(){
     delete gameList[this.id];
-    this.players.forEach(socket=>{
-      this.removePlayer(socket);
+    this.players.forEach(socketID=>{
+      this.removePlayer(socketID);
     });
     this.runner.destroy();
   }
@@ -65,16 +66,15 @@ class Room {
     socket.join(this.roomName);
     //console.log('add plahyer');
     socket.on('disconnect',()=>{self.disconnected(socket)});
-    this.players.push(socket);
+    this.players[socket.id] = socket;
     this.emit('playerjoin',getNames(socket));
     this.runner.connected(socket);
   }
   removePlayer(socket){
-    let index = this.players.indexOf(socket);
-    if (index > -1) this.players.splice(index,1);
+    delete this.players[socket.id];
     delete inGame[socket.id];
     socket.leave(this.roomName);
-    if (this.players.length < 1) this.destroy();
+    if (Object.keys(this.players).length < 1) this.destroy();
     this.emit('playerleft',getNames(socket));
     this.runner.disconnected(socket);
   }
@@ -83,8 +83,8 @@ class Room {
   //   return io.sockets.in(this.roomName);
   // }
 }
-function playerList(room) {
-  return gameList[room].players.map(socket=>{return getNames(socket)});
+function playerList(roomID) {
+  return Object.values(gameList[roomID].players).map(socket=>{return getNames(socket)});
 }
 function connected(socket){
   socket.on('joinroom',data=>{

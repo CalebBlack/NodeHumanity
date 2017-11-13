@@ -27,6 +27,7 @@ class GameRunner {
     this.chooseCard = this.chooseCard.bind(this);
     this.roundTimeout = this.roundTimeout.bind(this);
     this.chooseWinner = this.chooseWinner.bind(this);
+    this.won = this.won.bind(this);
     this.roundTimeLimit = 10000;
     this.checkStart = this.checkStart.bind(this);
     this.started = false;
@@ -65,7 +66,9 @@ class GameRunner {
     this.round();
   }
   disconnected(socket) {
-
+    console.log('removing',socket.user.username);
+    socket.removeListener('choosecard',this.chooseCard);
+    socket.removeListener('choosewinner',this.chooseWinner);
   }
   stage2() {
     this.stage = 2;
@@ -95,7 +98,12 @@ class GameRunner {
       user: this.room.sockets[id].user.username
     });
     this.wins[id] = (this.wins[id] || 0) + 1;
-    return this.wins[id] >= this.winAmount;
+    let won = this.wins[id] >= this.winAmount;
+    if (won) this.won(id);
+    return won;
+  }
+  won(id){
+    this.emit('gamewon',{user:this.room.sockets[id].username});
   }
   checkStart() {
     if (!this.started) {

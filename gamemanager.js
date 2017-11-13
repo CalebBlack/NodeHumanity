@@ -34,7 +34,6 @@ class Room {
     this.destroy = this.destroy.bind(this);
     this.addPlayer = this.addPlayer.bind(this);
     this.removePlayer = this.removePlayer.bind(this);
-    this.getPlayer = this.getPlayer.bind(this);
     //this.getPlayers = this.getPlayers.bind(this);
     this.emit = this.emit.bind(this);
     // END OF BINDINGS
@@ -51,7 +50,7 @@ class Room {
   }
   destroy(){
     delete gameList[this.id];
-    this.players.forEach(socketID=>{
+    Object.keys(this.players).forEach(socketID=>{
       this.removePlayer(socketID);
     });
     this.runner.destroy();
@@ -70,7 +69,8 @@ class Room {
     this.emit('playerjoin',getNames(socket));
     this.runner.connected(socket);
   }
-  removePlayer(socket){
+  removePlayer(socketID){
+    let socket = this.players[socketID];
     delete this.players[socket.id];
     delete inGame[socket.id];
     socket.leave(this.roomName);
@@ -106,7 +106,7 @@ function connected(socket){
   })
   socket.on('leaveroom',data=>{
     if (inGame[socket.id]&& gameList[inGame[socket.id]]) {
-      gameList[inGame[socket.id]].removePlayer(socket);
+      gameList[inGame[socket.id]].removePlayer(socket.id);
       socket.emit('leftroom');
     } else {
       socket.emit('leaveroomfailed');

@@ -7,7 +7,7 @@ import {connect} from 'react-redux';
 import Manager from './manager';
 import * as loginStatuses from '../redux/loginstatuses';
 import socketioWildcard from 'socketio-wildcard';
-import setUser from '../redux/actionss/setuser';
+import setUser from '../redux/actions/setuser';
 const patch = socketioWildcard(io.Manager);
 
 var socket = null;
@@ -30,6 +30,7 @@ class Door extends React.Component {
     socket.on('authorized',this.onAuth);
   }
   componentWillUnmount(){
+    if (!socket) return;
     socket.removeListener('connect',this.onConnect);
     socket.removeListener('disconnect',this.onDisconnect);
     socket.removeListener('authorized',this.onAuth);
@@ -43,11 +44,11 @@ class Door extends React.Component {
     });
     console.log('connected');
     socket.emit('authenticate', {token: localStorage.sessionID});
-    self.setState(Object.assign({},self.state,{connected:true}));
+    this.setState(Object.assign({},self.state,{connected:true}));
   }
   onDisconnect(){
     console.log('disconnected');
-    self.setState(Object.assign({},self.state,{connected:false}));
+    this.setState(Object.assign({},self.state,{connected:false}));
   }
   render(){
     if (this.props.loginStatus === loginStatuses.loggedOut) socket = null;

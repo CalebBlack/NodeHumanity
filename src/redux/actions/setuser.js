@@ -1,7 +1,7 @@
-import {setUser} from '../actiontypes';
+import * as actionTypes from '../actiontypes';
 
-export default (user)=>{
-  dispatch => {
-    dispatch({type:setUser,user});
+export default function setUser(user){
+  return dispatch => {
+    dispatch({type:actionTypes.setUser,user});
   }
 }

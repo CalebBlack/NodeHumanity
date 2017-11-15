@@ -23,6 +23,7 @@ class Game extends React.Component {
     this.printMessage = this.printMessage.bind(this);
     this.printPlayers = this.printPlayers.bind(this);
     this.renderInner = this.renderInner.bind(this);
+    this.onGameStart = this.onGameStart.bind(this);
     this.chatSubmit = this.chatSubmit.bind(this);
     this.leave = this.leave.bind(this);
     this.onChatMessage = this.onChatMessage.bind(this);

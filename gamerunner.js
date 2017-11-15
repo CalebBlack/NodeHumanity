@@ -1,6 +1,6 @@
 const cards = require('./public/cards.json');
 const randomBetween = require('./functions/randombetween');
-const minimumPlayers = 1;
+const minimumPlayers = 2;
 
 function drawCard(black = false) {
   let color = black !== true ? 'whiteCards' : 'blackCards';
@@ -39,21 +39,26 @@ class GameRunner {
     this.stage = 1;
     this.wins = {};
     this.selections = {};
-    this.roundNumber = 1;
+    this.roundNumber = 0;
   }
   round() {
     this.stage = 1;
     this.roundNumber++;
+    let playerIDs = Object.keys(this.room.players);
+    console.log(playerIDs,this.roundNumber, (this.roundNumber - 1) % playerIDs.length);
+    this.cardCzar = this.room.players[playerIDs[(this.roundNumber - 1) % playerIDs.length]];
     this.selections = {};
     this.blackCard = drawCard(true);
     this.emit('newround', {
       round: this.roundNumber,
-      blackCard: this.blackCard
+      blackCard: this.blackCard,
+      czar: this.cardCzar.user.username
     });
     this.drawAll();
   }
   drawAll() {
     Object.entries(this.hands).forEach(handPair => {
+      if (!this.room.players[handPair[0]]) return;
       let hand = handPair[1];
       let card = drawCard(false);
       hand.push(card);
@@ -104,6 +109,7 @@ class GameRunner {
   }
   won(id){
     this.emit('gamewon',{user:this.room.sockets[id].username});
+    this.room.destroy();
   }
   checkStart() {
     if (!this.started) {
@@ -118,15 +124,12 @@ class GameRunner {
   }
   start() {
     this.started = true;
-    this.emit('gamestarting', {
-      round: this.roundNumber,
-      blackCard: drawCard(true)
-    });
-    this.interval = setInterval(this.roundTimeout, this.roundTimeLimit);
+    this.emit('gamestarting');
     Object.values(this.room.players).forEach(socket => {
       this.hands[socket.id] = drawHand();
       socket.emit('startinghand', this.hands[socket.id]);
     });
+    this.nextRound();
   }
   destroy() {
     if (this.interval) this.interval = clearInterval(this.interval);

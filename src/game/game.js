@@ -56,6 +56,7 @@ class Game extends React.Component {
   }
   onRound(data){
     let newState = {blackCard:data.blackCard,round:data.round,czar:data.czar};
+    console.log('NS',newState);
     this.setState(Object.assign({},this.state,newState));
   }
   onDrawCard(cardID){
@@ -69,6 +70,7 @@ class Game extends React.Component {
     this.setState(Object.assign({},this.state,{hand}));
   }
   onGameStart(){
+    console.log('game starting');
     this.setState(Object.assign({},this.state,{started:true}));
   }
   onPlayerJoin(player){
@@ -113,6 +115,7 @@ class Game extends React.Component {
     }
   }
   render(){
+    console.log('Am I the Czar?',this.state.czar === this.props.user.username,this.state.czar,this.props.user.username);
     return(
       <div id='game'>
         <div className='statusbar'>
@@ -120,9 +123,7 @@ class Game extends React.Component {
           <span className='players' onClick={this.printPlayers}>Players: {this.state.players.length}</span>
           <button className='leave' onClick={this.leave}>Leave</button>
         </div>
-        <div className='inner'>
-          {this.renderInner()}
-        </div>
+        {this.renderInner()}
         <div className='chatbox'>
           <div ref={ref=>{this.messageBox = ref;}} className='messages'>
             <div className='senders'>
@@ -148,7 +149,10 @@ class Game extends React.Component {
   }
   renderInner(){
     return (
-      <p>hi</p>
+      <div className='inner'>
+        <p>Cards: {this.state.hand.join(',')}</p>
+        <p>Czar: {(this.state.czar === this.props.user.username).toString()}</p>
+      </div>
     )
   }
   chatSubmit(){
@@ -164,4 +168,4 @@ class Game extends React.Component {
     this.props.socket.emit('leaveroom');
   }
 }
-export default connect()(Game);
+export default connect(state=>{return {user:state.user}})(Game);

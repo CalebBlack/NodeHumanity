@@ -29,12 +29,6 @@ class Door extends React.Component {
     socket.on('disconnect',this.onDisconnect);
     socket.on('authorized',this.onAuth);
   }
-  componentWillUnmount(){
-    if (!socket) return;
-    socket.removeListener('connect',this.onConnect);
-    socket.removeListener('disconnect',this.onDisconnect);
-    socket.removeListener('authorized',this.onAuth);
-  }
   onAuth(user){
     this.props.dispatch(setUser(user));
   }

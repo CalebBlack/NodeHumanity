@@ -21,6 +21,7 @@ function sockets(server) {
           socket.token = token;
           socket.user = user;
           socket.auth = true;
+          socket.emit('authorized',{displayname:socket.user.displayname,username:socket.user.username});
           authorized(socket,token);
         });
       })

@@ -1,6 +1,6 @@
 const cards = require('./public/cards.json');
 const randomBetween = require('./functions/randombetween');
-const minimumPlayers = 1;
+const minimumPlayers = 2;
 
 function drawCard(black = false) {
   let color = black !== true ? 'whiteCards' : 'blackCards';
@@ -114,7 +114,7 @@ class GameRunner {
   checkStart() {
     if (!this.started) {
       if (Object.keys(this.room.players).length >= minimumPlayers) {
-        this.start();
+        setTimeout(this.start,1000);
       }
     }
   }

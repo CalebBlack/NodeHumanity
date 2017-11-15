@@ -1,6 +1,6 @@
 const cards = require('./public/cards.json');
 const randomBetween = require('./functions/randombetween');
-const minimumPlayers = 2;
+const minimumPlayers = 1;
 
 function drawCard(black = false) {
   let color = black !== true ? 'whiteCards' : 'blackCards';
@@ -62,7 +62,7 @@ class GameRunner {
       let hand = handPair[1];
       let card = drawCard(false);
       hand.push(card);
-      this.room.players[handPair[0]].emit('drewCard', card);
+      this.room.players[handPair[0]].emit('drewcard', card);
     });
   }
   nextRound() {

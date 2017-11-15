@@ -20,14 +20,17 @@ class Game extends React.Component {
     this.onPlayerLeave = this.onPlayerLeave.bind(this);
     this.onPlayerList = this.onPlayerList.bind(this);
     this.onPlayerJoin = this.onPlayerJoin.bind(this);
+    this.onDrawHand = this.onDrawHand.bind(this);
+    this.onDrawCard = this.onDrawCard.bind(this);
     this.printMessage = this.printMessage.bind(this);
     this.printPlayers = this.printPlayers.bind(this);
     this.renderInner = this.renderInner.bind(this);
     this.onGameStart = this.onGameStart.bind(this);
+    this.onRound = this.onRound.bind(this);
     this.chatSubmit = this.chatSubmit.bind(this);
     this.leave = this.leave.bind(this);
     this.onChatMessage = this.onChatMessage.bind(this);
-    this.state = {players:[],messages:[],started:false};
+    this.state = {stage:1,players:[],messages:[],hand:[],started:false};
   }
   componentWillMount(){
     this.props.socket.on('playerlist',this.onPlayerList);
@@ -35,6 +38,9 @@ class Game extends React.Component {
     this.props.socket.on('playerleft',this.onPlayerLeave);
     this.props.socket.on('chatmessage',this.onChatMessage);
     this.props.socket.on('gamestarting',this.onGameStart);
+    this.props.socket.on('drewcard',this.onDrawCard);
+    this.props.socket.on('startinghand',this.onDrawHand);
+    this.props.socket.on('newround',this.onRound);
     this.props.socket.emit('getplayers');
     this.props.dispatch(setHeaderDisplay('none'));
   }
@@ -44,6 +50,23 @@ class Game extends React.Component {
     this.props.socket.removeListener('playerleft',this.onPlayerLeave);
     this.props.socket.removeListener('chatmessage',this.onChatMessage);
     this.props.socket.removeListener('gamestarting',this.onGameStart);
+    this.props.socket.removeListener('startinghand',this.onDrawHand);
+    this.props.socket.removeListener('newround',this.onRound);
+    this.props.socket.removeListener('drewcard',this.onDrawCard);
+  }
+  onRound(data){
+    let newState = {blackCard:data.blackCard,round:data.round,czar:data.czar};
+    this.setState(Object.assign({},this.state,newState));
+  }
+  onDrawCard(cardID){
+    var hand = this.state.hand.slice(0);
+    hand.push(cardID);
+    this.setState(Object.assign({},this.state,{hand}));
+  }
+  onDrawHand(cardArray){
+    var hand = this.state.hand.slice(0);
+    hand = hand.concat(cardArray);
+    this.setState(Object.assign({},this.state,{hand}));
   }
   onGameStart(){
     this.setState(Object.assign({},this.state,{started:true}));

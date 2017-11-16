@@ -36,7 +36,7 @@ class GameRunner {
     this.room = room;
     this.blackCard = drawCard(true);
     this.emit = this.room.emit;
-    this.winAmount = 3;
+    this.winAmount = 12;
     this.hands = {};
     this.stage = 1;
     this.wins = {};
@@ -47,7 +47,7 @@ class GameRunner {
     this.stage = 1;
     this.roundNumber++;
     let playerIDs = Object.keys(this.room.players);
-    if (playerIDs.length < 1) return this.room.destroy();
+    if (playerIDs.length < 1) return this.room.destroy(false,'missing players in round check');
     console.log(playerIDs,this.roundNumber, (this.roundNumber - 1) % playerIDs.length);
     this.cardCzar = this.room.players[playerIDs[(this.roundNumber - 1) % playerIDs.length]];
     this.selections = {};
@@ -79,7 +79,7 @@ class GameRunner {
     console.log('removing',socket.user.username);
     socket.removeListener('choosecard',this.chooseCard);
     socket.removeListener('choosewinner',this.chooseWinner);
-    if (Object.keys(this.room.players).length < minimumPlayers) this.room.destroy();
+    if (Object.keys(this.room.players).length < minimumPlayers) this.room.destroy(false,'not enough players');
   }
   stage2() {
     if (this.interval) {
@@ -101,7 +101,7 @@ class GameRunner {
     console.log(socket.user.username,'choosing',id);
     if (typeof id != 'number' || this.stage != 1 || socket === this.cardCzar) return;
     let hand = this.hands[socket.id];
-    if (!hand) return this.room.destroy();
+    if (!hand) return this.room.destroy(false,'missing hand!');
     if (hand[id]) {
       this.selections[socket.id] = hand[id];
       console.log(Object.keys(this.selections).length ,Object.keys(this.room.players).length - 1);
@@ -144,7 +144,7 @@ class GameRunner {
     console.log(id,Object.keys(this.room.players));
     let socket = this.room.players[id];
     this.emit('gamewon',{displayname:socket.user.displayname,username:socket.user.username});
-    this.room.destroy(true);
+    this.room.destroy(true,'game won');
   }
   checkStart() {
     if (!this.started) {

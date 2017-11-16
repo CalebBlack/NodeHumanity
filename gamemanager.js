@@ -48,9 +48,16 @@ class Room {
   emit(event,data){
     this.room.emit(event,data);
   }
-  destroy(safe=false){
-    if (safe !== true) this.emit('gamedestroyed');
-    this.emit('gameended');
+  destroy(safe=false,reason){
+    if (this.destroyed) return console.log('error: already destroyed');
+    if (reason) console.log('game destroyed because of',reason);
+    this.destroyed = true;
+    if (safe !== true) {
+      this.emit('gamedestroyed');
+    } else {
+      this.emit('gameended');
+    }
+
     delete gameList[this.id];
     Object.keys(this.players).forEach(socketID=>{
       this.removePlayer(socketID);

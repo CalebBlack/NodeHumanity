@@ -186,6 +186,7 @@ class Game extends React.Component {
             return (<Card className={this.state.roundWinner ? (this.state.roundWinner.cardNumber === index ? 'winner': null) : null} onClick={()=>{isCzar ? this.chooseWinner(index) : null}} key={index} text={this.props.whiteCards[cardID]}/>)
           })}</div>
         </div>
+        {this.state.roundWinner ? (<span className='roundwinner'>{this.state.roundWinner.name} Won!</span>) : null}
       )
     } else if (isCzar) {
       if (this.state.stage == 1) {

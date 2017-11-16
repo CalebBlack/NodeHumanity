@@ -29,8 +29,8 @@ class GameRunner {
     this.chooseWinner = this.chooseWinner.bind(this);
     this.nextRound = this.nextRound.bind(this);
     this.won = this.won.bind(this);
-    this.roundTimeLimit = 10000;
-    this.round2TimeLimit = 10000;
+    this.roundTimeLimit = 30000;
+    this.round2TimeLimit = 30000;
     this.checkStart = this.checkStart.bind(this);
     this.started = false;
     this.room = room;
@@ -120,7 +120,7 @@ class GameRunner {
         if (this.interval) {
           clearInterval(this.interval);
         }
-        this.interval = setInterval(this.nextRound,500);
+        this.interval = setInterval(this.nextRound,2000);
       }
     }
   }
@@ -141,7 +141,8 @@ class GameRunner {
   }
   won(id){
     console.log(id,Object.keys(this.room.players));
-    this.emit('gamewon',{user:this.room.players[id].user.username});
+    let socket = this.room.players[id];
+    this.emit('gamewon',{displayname:socket.user.displayname,username:socket.user.username});
     this.room.destroy();
   }
   checkStart() {

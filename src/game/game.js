@@ -29,13 +29,14 @@ class Game extends React.Component {
     this.renderInner = this.renderInner.bind(this);
     this.onStage2 = this.onStage2.bind(this);
     this.onGameStart = this.onGameStart.bind(this);
+    this.onGameWinner = this.onGameWinner.bind(this);
     this.chooseCard = this.chooseCard.bind(this);
     this.onRound = this.onRound.bind(this);
     //this.onClick = this.onClick.bind(this);
     this.chatSubmit = this.chatSubmit.bind(this);
     this.leave = this.leave.bind(this);
     this.onChatMessage = this.onChatMessage.bind(this);
-    this.state = {stage:1,players:[],messages:[],hand:[],started:false};
+    this.state = {stage:1,players:[],messages:[],hand:[],started:false,gameWinner:null};
   }
   componentWillMount(){
     this.props.socket.on('playerlist',this.onPlayerList);
@@ -48,12 +49,14 @@ class Game extends React.Component {
     this.props.socket.on('newround',this.onRound);
     this.props.socket.on('roundwinner',this.onRoundWon);
     this.props.socket.on('stage2',this.onStage2);
+    this.props.socket.on('gamewon',this.onGameWinner);
     this.props.socket.emit('getplayers');
     this.props.dispatch(setHeaderDisplay('none'));
   }
   componentWillUnmount(){
     this.props.socket.removeListener('playerlist',this.onPlayerList);
     this.props.socket.removeListener('playerjoin',this.onPlayerJoin);
+    this.props.socket.removeListener('gamewon',this.onGameWinner);
     this.props.socket.removeListener('roundwinner',this.onRoundWon);
     this.props.socket.removeListener('playerleft',this.onPlayerLeave);
     this.props.socket.removeListener('chatmessage',this.onChatMessage);
@@ -65,6 +68,9 @@ class Game extends React.Component {
   }
   onStage2(selections){
     this.setState(Object.assign({},this.state,{stage:2,selections}));
+  }
+  onGameWinner(data){
+    this.setState(Object.assign({},this.state,{gameWinner:data}));
   }
   chooseCard(index){
     console.log('Choosing Card',index);
@@ -176,9 +182,15 @@ class Game extends React.Component {
     if (this.state.started !== true){
       return (
         <div className='inner'>
-          <p className='waiting'>Waiting for more players...</p>
+          <p className='alert waiting'>Waiting for more players...</p>
         </div>
       );
+    } else if (this.state.gameWinner) {
+      return (
+        <div className='inner'>
+          <span className='alert gamewinner'>{this.state.gameWinner.displayname} Won the Game!</span>
+        </div>
+      )
     } else if (this.state.stage == 2) {
       return (
         <div className='inner'>
@@ -186,7 +198,7 @@ class Game extends React.Component {
           <div className='selections'>{this.state.selections.map((cardID,index)=>{
             return (<Card className={this.state.roundWinner ? (this.state.roundWinner.cardNumber === index ? 'winner': null) : null} onClick={()=>{isCzar ? this.chooseWinner(index) : null}} key={index} text={this.props.whiteCards[cardID]}/>)
           })}</div>
-          {this.state.roundWinner ? <span className='roundwinner'>{this.state.roundWinner.user.displayname} Won!</span> : null}
+          {this.state.roundWinner ? <span className='alert roundwinner'>{this.state.roundWinner.displayname} Won!</span> : null}
         </div>
       )
     } else if (isCzar) {

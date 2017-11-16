@@ -6,7 +6,7 @@ module.exports = {
     path: __dirname + "/build"
   },
   plugins: [
-    // new UglifyJSPlugin()
+    new UglifyJSPlugin()
   ],
   module: {
     rules: [{
@@ -27,6 +27,6 @@ module.exports = {
       }
     ]
   },
-  watch: true,
+  watch: false,
   entry: "./src/index.js"
 }

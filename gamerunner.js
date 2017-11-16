@@ -81,7 +81,8 @@ class GameRunner {
     this.stage = 2;
     this.emit('roundstage', this.stage);
   }
-  chooseCard(id) {
+  chooseCard(socket,id) {
+    console.log(socket,'choosing',id);
     if (typeof id != 'number' || this.stage != 1 || socket === this.cardCzar) return;
     let hand = this.hands[socket.id];
     if (hand.includes(id)) {
@@ -90,7 +91,7 @@ class GameRunner {
   }
   connected(socket) {
     this.checkStart();
-    socket.on('choosecard', this.chooseCard);
+    socket.on('choosecard', this.chooseCard.bind(this,socket));
     socket.on('choosewinner', this.chooseWinner);
   }
   chooseWinner(id) {

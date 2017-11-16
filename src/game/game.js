@@ -60,6 +60,7 @@ class Game extends React.Component {
   chooseCard(index){
     console.log('Choosing Card',index);
     this.setState(Object.assign({},this.state,{choice:index}));
+    this.props.socket.emit('choosecard',index);
   }
   onRound(data){
     let newState = {blackCard:data.blackCard,round:data.round,czar:data.czar,choice:null};

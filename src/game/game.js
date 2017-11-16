@@ -183,7 +183,7 @@ class Game extends React.Component {
         <div className='inner'>
           <Card className='prompt' color='black' text={this.state.blackCard ? this.props.blackCards[this.state.blackCard].text : null}/>
           <div className='selections'>{this.state.selections.map((cardID,index)=>{
-            return (<Card className={this.state.roundWinner ? this.state.roundWinner.cardNumber === index : null} onClick={()=>{isCzar ? this.chooseWinner(index) : null}} key={index} text={this.props.whiteCards[cardID]}/>)
+            return (<Card className={this.state.roundWinner ? (this.state.roundWinner.cardNumber === index ? 'winner': null) : null} onClick={()=>{isCzar ? this.chooseWinner(index) : null}} key={index} text={this.props.whiteCards[cardID]}/>)
           })}</div>
         </div>
       )

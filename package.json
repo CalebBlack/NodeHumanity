@@ -37,6 +37,7 @@
     "css-loader": "^0.28.7",
     "express": "^4.16.2",
     "express-rate-limit": "^2.9.0",
+    "express-sslify": "^1.2.0",
     "helmet": "^3.9.0",
     "isemail": "^3.0.0",
     "less": "^2.7.3",

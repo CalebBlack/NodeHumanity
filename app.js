@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const helmet = require('helmet');
 const http = require('http');
 const compression = require('compression');
+const enforce = require('express-sslify');
 
 const api = require('./api');
 const {sockets} = require('./sockets');
@@ -14,6 +15,7 @@ const server = http.Server(app);
 app.disable('x-powered-by');
 
 // MIDDLEWARE
+app.use(enforce.HTTPS());
 app.use(compression());
 app.use(bodyParser.json());
 app.use(helmet());

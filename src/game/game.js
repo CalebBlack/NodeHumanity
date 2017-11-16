@@ -67,7 +67,15 @@ class Game extends React.Component {
     this.props.socket.removeListener('drewcard',this.onDrawCard);
   }
   onStage2(selections){
-    this.setState(Object.assign({},this.state,{stage:2,selections}));
+    var newState = {stage:2,selections};
+    console.log('choice',this.state.choice);
+    if (typeof this.state.choice == 'number') {
+      var newHand = this.state.hand.slice(0);
+      newHand.splice(this.state.choice,1);
+      newState.hand = newHand;
+      console.log('hands',this.state.hand,newHand);
+    }
+    this.setState(Object.assign({},this.state,newState));
   }
   onGameWinner(data){
     this.setState(Object.assign({},this.state,{gameWinner:data}));
@@ -155,7 +163,7 @@ class Game extends React.Component {
           <div className='playerwins'>
             <h4>Points:</h4>
             {Object.entries(this.state.players).map((playerPair,index)=>{return (
-              <span key={index} className='player'>{playerPair[1]+': '+(this.state.wins[playerPair[0]] || 0)}</span>
+              <span key={index} className={'player'+(this.state.czar === playerPair[0]?' czar' : '')}>{playerPair[1]+': '+(this.state.wins[playerPair[0]] || 0)}</span>
             )})}
           </div>
         </div>

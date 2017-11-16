@@ -86,7 +86,9 @@ class Game extends React.Component {
     this.setState(Object.assign({},this.state,newState));
   }
   onRoundWon(data){
-    this.setState(Object.assign({},this.state,{roundWinner:{displayname:data.user.displayname,username:data.user.username,cardNumber:data.cardNumber}}));
+    var wins = Object.assign({},this.state.wins);
+    wins[data.user.username] = (wins[data.user.username] || 0) +1;
+    this.setState(Object.assign({},this.state,{wins,roundWinner:{displayname:data.user.displayname,username:data.user.username,cardNumber:data.cardNumber}}));
   }
   onDrawCard(cardID){
     var hand = this.state.hand.slice(0);
@@ -147,11 +149,13 @@ class Game extends React.Component {
     console.log('Am I the Czar?',this.state.czar === this.props.user.username,this.state.czar,this.props.user.username);
     return(
       <div id='game'>
-        <div className='statusbar'>
-          <span className='roomnumber'>Room #{this.props.room}</span>
-          {this.state.round ? <span className='roundnumber'>Round {this.state.round}</span> : null}
-          <span className='players' onClick={this.printPlayers}>Players: {this.state.players.length}</span>
-          <button className='leave' onClick={this.leave}>Leave</button>
+        <div className='sidebar'>
+          <div className='statusbar'>
+            <span className='roomnumber'>Room #{this.props.room}</span>
+            {this.state.round ? <span className='roundnumber'>Round {this.state.round}</span> : null}
+            <span className='players' onClick={this.printPlayers}>Players: {this.state.players.length}</span>
+            <button className='leave' onClick={this.leave}>Leave</button>
+          </div>
         </div>
         {this.renderInner()}
         <div className='chatbox'>
@@ -188,7 +192,7 @@ class Game extends React.Component {
     } else if (this.state.gameWinner) {
       return (
         <div className='inner'>
-          <span className='alert gamewinner'>{this.state.gameWinner.displayname} Won the Game!</span>
+          <span className='alert gamewinner'>{this.state.gameWinner.displayname} won!</span>
         </div>
       )
     } else if (this.state.stage == 2) {
@@ -198,7 +202,7 @@ class Game extends React.Component {
           <div className='selections'>{this.state.selections.map((cardID,index)=>{
             return (<Card className={this.state.roundWinner ? (this.state.roundWinner.cardNumber === index ? 'winner': null) : null} onClick={()=>{isCzar ? this.chooseWinner(index) : null}} key={index} text={this.props.whiteCards[cardID]}/>)
           })}</div>
-          {this.state.roundWinner ? <span className='alert roundwinner'>{this.state.roundWinner.displayname} Won!</span> : null}
+          {this.state.roundWinner ? <span className='alert roundwinner'>{this.state.roundWinner.displayname} won the round!</span> : null}
         </div>
       )
     } else if (isCzar) {

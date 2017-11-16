@@ -1,6 +1,6 @@
 const cards = require('./public/cards.json');
 const randomBetween = require('./functions/randombetween');
-const minimumPlayers = 2;
+const minimumPlayers = 3;
 
 function drawCard(black = false) {
   let color = black !== true ? 'whiteCards' : 'blackCards';

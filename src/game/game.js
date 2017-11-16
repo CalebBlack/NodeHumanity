@@ -169,7 +169,7 @@ class Game extends React.Component {
     if (this.state.started !== true){
       return (
         <div className='inner'>
-          Waiting for more players...
+          <p className='waiting'>Waiting for more players...</p>
         </div>
       );
     } else if (this.state.stage == 2) {
@@ -185,6 +185,7 @@ class Game extends React.Component {
       if (this.state.stage == 1) {
         return (
           <div className='inner'>
+            <Card className='prompt' color='black' text={this.state.blackCard ? this.props.blackCards[this.state.blackCard].text : null}/>
             <p>Waiting for Players to choose...</p>
           </div>
         )

@@ -238,6 +238,7 @@ class Game extends React.Component {
     }
   }
   leave(){
+    this.props.toLobby();
     this.props.socket.emit('leaveroom');
   }
 }

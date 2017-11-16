@@ -7,6 +7,7 @@ class Manager extends React.Component {
     super(props);
     this.state = {location:'lobby'};
     this.leftRoom = this.leftRoom.bind(this);
+    this.toLobby = this.toLobby.bind(this);
   }
   componentDidMount(){
     let onJoin = room=>{
@@ -18,18 +19,19 @@ class Manager extends React.Component {
     this.props.socket.on('gamedestroyed',this.leftRoom.bind(this,false));
   }
   leftRoom(safe=true){
+    this.toLobby();
+  }
+  toLobby(){
     this.setState(Object.assign({},this.state,{location:'lobby'}));
   }
   render(){
     if (this.state.location === 'lobby') {
       return(<Lobby manager={this} socket={this.props.socket}/>);
     } else if (this.state.location === 'inGame') {
-      return(<Game manager={this} socket={this.props.socket} room={this.state.room}/>);
+      return(<Game toLobby={this.toLobby} manager={this} socket={this.props.socket} room={this.state.room}/>);
     } else {
       return null;
     }
-    console.log('gamesocket',this.props.socket);
-    return (<p>game</p>)
   }
   // leaveGame(){
   //   this.setState(Object.assign({},this.state,{location:'lobby'}));

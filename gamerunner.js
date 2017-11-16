@@ -46,6 +46,7 @@ class GameRunner {
   round() {
     this.stage = 1;
     this.roundNumber++;
+    this.roundWon = false;
     let playerIDs = Object.keys(this.room.players);
     if (playerIDs.length < 1) return this.room.destroy(false,'missing players in round check');
     console.log(playerIDs,this.roundNumber, (this.roundNumber - 1) % playerIDs.length);
@@ -116,7 +117,8 @@ class GameRunner {
     socket.on('choosewinner', this.chooseWinner.bind(this,socket));
   }
   chooseWinner(socket,index) {
-    if (typeof index == 'number' && this.stage == 2 && this.cardCzar === socket) {
+    if (typeof index == 'number' && this.roundWon !== true && this.stage == 2 && this.cardCzar === socket) {
+      this.roundWon = true;
       if (!this.winner(index)) {
         if (this.interval) {
           clearInterval(this.interval);

@@ -73,7 +73,6 @@ class Game extends React.Component {
     this.setState(Object.assign({},this.state,{gameWinner:data}));
   }
   chooseCard(index){
-    console.log('Choosing Card',index);
     this.setState(Object.assign({},this.state,{choice:index}));
     this.props.socket.emit('choosecard',index);
   }
@@ -82,7 +81,6 @@ class Game extends React.Component {
   }
   onRound(data){
     let newState = {blackCard:data.blackCard,stage:1,round:data.round,czar:data.czar,choice:null,selections:null,roundWinner:null};
-    console.log('NS',newState);
     this.setState(Object.assign({},this.state,newState));
   }
   onRoundWon(data){
@@ -101,14 +99,12 @@ class Game extends React.Component {
     this.setState(Object.assign({},this.state,{hand}));
   }
   onGameStart(){
-    console.log('game starting');
     this.setState(Object.assign({},this.state,{started:true}));
   }
   onPlayerJoin(player){
     if (!this.state.players[player.username]) {
       let newPlayers = Object.assign({},this.state.players);
       newPlayers[player.username] = player.displayname;
-      console.log('pjnp',newPlayers,this.state.players);
       this.setState(Object.assign({},this.state,{players:newPlayers}));
     }
   }
@@ -117,7 +113,6 @@ class Game extends React.Component {
     playerList.forEach(playerData=>{
       playerObject[playerData.username] = playerData.displayname;
     });
-    console.log('po',playerObject);
     this.setState(Object.assign({},this.state,{players:playerObject}));
   }
   onPlayerLeave(player){
@@ -148,7 +143,6 @@ class Game extends React.Component {
     }
   }
   render(){
-    console.log('Am I the Czar?',this.state.czar === this.props.user.username,this.state.czar,this.props.user.username);
     return(
       <div id='game'>
         <div className='sidebar'>

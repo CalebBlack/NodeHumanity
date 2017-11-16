@@ -131,7 +131,7 @@ class GameRunner {
     if (!user) return false;
     let id = user.id;
     this.emit('roundwinner', {
-      user: user.user.username,
+      user: {username:user.user.username,displayname:user.user.displayname},
       cardNumber: index
     });
     this.wins[id] = (this.wins[id] || 0) + 1;

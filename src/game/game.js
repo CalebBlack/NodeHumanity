@@ -80,7 +80,7 @@ class Game extends React.Component {
     this.setState(Object.assign({},this.state,newState));
   }
   onRoundWon(data){
-    this.setState(Object.assign({},this.state,{roundWinner:{name:data.user,cardNumber:data.cardNumber}}));
+    this.setState(Object.assign({},this.state,{roundWinner:{displayname:data.user.displayname,username:data.user.username,cardNumber:data.cardNumber}}));
   }
   onDrawCard(cardID){
     var hand = this.state.hand.slice(0);
@@ -143,6 +143,7 @@ class Game extends React.Component {
       <div id='game'>
         <div className='statusbar'>
           <span className='roomnumber'>Room #{this.props.room}</span>
+          {this.state.round ? <span className='roundnumber'>Round {this.state.round}</span> : null}
           <span className='players' onClick={this.printPlayers}>Players: {this.state.players.length}</span>
           <button className='leave' onClick={this.leave}>Leave</button>
         </div>
@@ -185,8 +186,8 @@ class Game extends React.Component {
           <div className='selections'>{this.state.selections.map((cardID,index)=>{
             return (<Card className={this.state.roundWinner ? (this.state.roundWinner.cardNumber === index ? 'winner': null) : null} onClick={()=>{isCzar ? this.chooseWinner(index) : null}} key={index} text={this.props.whiteCards[cardID]}/>)
           })}</div>
+          {this.state.roundWinner ? <span className='roundwinner'>{this.state.roundWinner.user.displayname} Won!</span> : null}
         </div>
-        {this.state.roundWinner ? (<span className='roundwinner'>{this.state.roundWinner.name} Won!</span>) : null}
       )
     } else if (isCzar) {
       if (this.state.stage == 1) {

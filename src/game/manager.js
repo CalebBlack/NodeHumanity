@@ -15,8 +15,9 @@ class Manager extends React.Component {
     this.props.socket.on('roomcreated',onJoin);
     this.props.socket.on('roomjoined',onJoin);
     this.props.socket.on('leftroom',this.leftRoom);
+    this.props.socket.on('gamedestroyed',this.leftRoom.bind(this,false));
   }
-  leftRoom(){
+  leftRoom(safe=true){
     this.setState(Object.assign({},this.state,{location:'lobby'}));
   }
   render(){

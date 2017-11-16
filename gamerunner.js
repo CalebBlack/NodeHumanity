@@ -79,6 +79,7 @@ class GameRunner {
     console.log('removing',socket.user.username);
     socket.removeListener('choosecard',this.chooseCard);
     socket.removeListener('choosewinner',this.chooseWinner);
+    if (Object.keys(this.room.players).length < minimumPlayers) this.room.destroy();
   }
   stage2() {
     if (this.interval) {
@@ -143,7 +144,7 @@ class GameRunner {
     console.log(id,Object.keys(this.room.players));
     let socket = this.room.players[id];
     this.emit('gamewon',{displayname:socket.user.displayname,username:socket.user.username});
-    this.room.destroy();
+    this.room.destroy(true);
   }
   checkStart() {
     if (!this.started) {

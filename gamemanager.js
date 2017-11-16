@@ -48,7 +48,8 @@ class Room {
   emit(event,data){
     this.room.emit(event,data);
   }
-  destroy(){
+  destroy(safe=false){
+    if (safe !== true) this.emit('gamedestroyed');
     this.emit('gameended');
     delete gameList[this.id];
     Object.keys(this.players).forEach(socketID=>{

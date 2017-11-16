@@ -26,6 +26,7 @@ class Game extends React.Component {
     this.printMessage = this.printMessage.bind(this);
     this.printPlayers = this.printPlayers.bind(this);
     this.renderInner = this.renderInner.bind(this);
+    this.onStage2 = this.onStage2.bind(this);
     this.onGameStart = this.onGameStart.bind(this);
     this.chooseCard = this.chooseCard.bind(this);
     this.onRound = this.onRound.bind(this);
@@ -44,6 +45,7 @@ class Game extends React.Component {
     this.props.socket.on('drewcard',this.onDrawCard);
     this.props.socket.on('startinghand',this.onDrawHand);
     this.props.socket.on('newround',this.onRound);
+    this.props.socket.on('stage2',this.onStage2);
     this.props.socket.emit('getplayers');
     this.props.dispatch(setHeaderDisplay('none'));
   }
@@ -52,18 +54,25 @@ class Game extends React.Component {
     this.props.socket.removeListener('playerjoin',this.onPlayerJoin);
     this.props.socket.removeListener('playerleft',this.onPlayerLeave);
     this.props.socket.removeListener('chatmessage',this.onChatMessage);
+    this.props.socket.removeListener('stage2',this.onStage2);
     this.props.socket.removeListener('gamestarting',this.onGameStart);
     this.props.socket.removeListener('startinghand',this.onDrawHand);
     this.props.socket.removeListener('newround',this.onRound);
     this.props.socket.removeListener('drewcard',this.onDrawCard);
+  }
+  onStage2(selections){
+    this.setState(Object.assign({},this.state,{stage:2,selections}));
   }
   chooseCard(index){
     console.log('Choosing Card',index);
     this.setState(Object.assign({},this.state,{choice:index}));
     this.props.socket.emit('choosecard',index);
   }
+  chooseWinner(index){
+    this.props.socket.emit('choosewinner',index);
+  }
   onRound(data){
-    let newState = {blackCard:data.blackCard,round:data.round,czar:data.czar,choice:null};
+    let newState = {blackCard:data.blackCard,stage:1,round:data.round,czar:data.czar,choice:null,selections:null};
     console.log('NS',newState);
     this.setState(Object.assign({},this.state,newState));
   }
@@ -157,12 +166,22 @@ class Game extends React.Component {
   }
   renderInner(){
     let isCzar = this.state.czar === this.props.user.username;
-    if (isCzar) {
+    if (this.state.stage == 2) {
       return (
         <div className='inner'>
-          <p>Waiting for Players to choose...</p>
+          <div className='selections'>{this.state.selections.map((cardID,index)=>{
+            return (<Card onClick={()=>{this.chooseWinner(index)}} key={index} text={this.props.whiteCards[cardID]}/>)
+          })}</div>
         </div>
       )
+    } else if (isCzar) {
+      if (this.state.stage == 1) {
+        return (
+          <div className='inner'>
+            <p>Waiting for Players to choose...</p>
+          </div>
+        )
+      }
     } else {
       return (
         <div className='inner'>

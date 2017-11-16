@@ -96,18 +96,23 @@ class GameRunner {
   connected(socket) {
     this.checkStart();
     socket.on('choosecard', this.chooseCard.bind(this,socket));
-    socket.on('choosewinner', this.chooseWinner);
+    socket.on('choosewinner', this.chooseWinner.bind(this,socket));
   }
-  chooseWinner(id) {
-    if (typeof id == 'number' && this.stage == 2 && this.room.players[id] && this.cardCzar === socket.id) {
-      if (!this.winner(id)) {
+  chooseWinner(socket,index) {
+    if (typeof index == 'number' && this.stage == 2 && this.cardCzar === socket) {
+      if (!this.winner(index)) {
         this.nextRound();
       }
     }
   }
-  winner(id) {
+  winner(index) {
+    let userID = Object.keys(this.selections)[index];
+    if (!userID) return false;
+    let user = this.room.players[userID];
+    if (!user) return false;
+    let id = user.id;
     this.emit('roundwinner', {
-      user: this.room.sockets[id].user.username
+      user: user.user.username
     });
     this.wins[id] = (this.wins[id] || 0) + 1;
     let won = this.wins[id] >= this.winAmount;
@@ -115,7 +120,7 @@ class GameRunner {
     return won;
   }
   won(id){
-    this.emit('gamewon',{user:this.room.sockets[id].username});
+    this.emit('gamewon',{user:this.room.players[id].username});
     this.room.destroy();
   }
   checkStart() {

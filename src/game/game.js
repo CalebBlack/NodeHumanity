@@ -169,6 +169,7 @@ class Game extends React.Component {
     if (this.state.stage == 2) {
       return (
         <div className='inner'>
+          <Card className='prompt' color='black' text={this.props.blackCards[this.state.blackCard].text}/>
           <div className='selections'>{this.state.selections.map((cardID,index)=>{
             return (<Card onClick={()=>{this.chooseWinner(index)}} key={index} text={this.props.whiteCards[cardID]}/>)
           })}</div>
@@ -185,6 +186,7 @@ class Game extends React.Component {
     } else {
       return (
         <div className='inner'>
+          <Card className='prompt' color='black' text={this.props.blackCards[this.state.blackCard].text}/>
           <div className='hand'>{this.state.hand.map((cardID,index)=>{
             return (<Card className={index === this.state.choice ? 'chosen' : null} onClick={()=>{this.chooseCard(index)}} key={index} text={this.props.whiteCards[cardID]}/>)
           })}</div>

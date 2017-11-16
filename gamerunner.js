@@ -79,14 +79,18 @@ class GameRunner {
   }
   stage2() {
     this.stage = 2;
-    this.emit('roundstage', this.stage);
+    this.emit('stage2', Object.values(this.selections));
   }
   chooseCard(socket,id) {
-    console.log(socket,'choosing',id);
+    console.log(socket.user.username,'choosing',id);
     if (typeof id != 'number' || this.stage != 1 || socket === this.cardCzar) return;
     let hand = this.hands[socket.id];
-    if (hand.includes(id)) {
-      this.selections[socket.id] = id;
+    if (hand[id]) {
+      this.selections[socket.id] = hand[id];
+      console.log(Object.keys(this.selections).length ,Object.keys(this.room.players).length - 1);
+      if (Object.keys(this.selections).length >= Object.keys(this.room.players).length - 1) this.stage2();
+    } else {
+      console.log('ni',hand,id);
     }
   }
   connected(socket) {

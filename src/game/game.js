@@ -186,7 +186,7 @@ class Game extends React.Component {
         return (
           <div className='inner'>
             <Card className='prompt' color='black' text={this.state.blackCard ? this.props.blackCards[this.state.blackCard].text : null}/>
-            <p>Waiting for Players to choose...</p>
+            <p className='waiting'>Waiting for other players to choose...</p>
           </div>
         )
       }
@@ -197,8 +197,6 @@ class Game extends React.Component {
           <div className='hand'>{this.state.hand.map((cardID,index)=>{
             return (<Card className={index === this.state.choice ? 'chosen' : null} onClick={()=>{this.chooseCard(index)}} key={index} text={this.props.whiteCards[cardID]}/>)
           })}</div>
-          <p>Cards: {this.state.hand.join(',')}</p>
-          <p>Czar: {isCzar.toString()}</p>
         </div>
       )
     }

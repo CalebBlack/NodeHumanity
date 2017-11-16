@@ -166,10 +166,16 @@ class Game extends React.Component {
   }
   renderInner(){
     let isCzar = this.state.czar === this.props.user.username;
-    if (this.state.stage == 2) {
+    if (this.state.started !== true){
       return (
         <div className='inner'>
-          <Card className='prompt' color='black' text={this.props.blackCards[this.state.blackCard].text}/>
+          Waiting for more players...
+        </div>
+      );
+    } else if (this.state.stage == 2) {
+      return (
+        <div className='inner'>
+          <Card className='prompt' color='black' text={this.state.blackCard ? this.props.blackCards[this.state.blackCard].text : null}/>
           <div className='selections'>{this.state.selections.map((cardID,index)=>{
             return (<Card onClick={()=>{this.chooseWinner(index)}} key={index} text={this.props.whiteCards[cardID]}/>)
           })}</div>
@@ -186,7 +192,7 @@ class Game extends React.Component {
     } else {
       return (
         <div className='inner'>
-          <Card className='prompt' color='black' text={this.props.blackCards[this.state.blackCard].text}/>
+          <Card className='prompt' color='black' text={this.state.blackCard ? this.props.blackCards[this.state.blackCard].text : null}/>
           <div className='hand'>{this.state.hand.map((cardID,index)=>{
             return (<Card className={index === this.state.choice ? 'chosen' : null} onClick={()=>{this.chooseCard(index)}} key={index} text={this.props.whiteCards[cardID]}/>)
           })}</div>

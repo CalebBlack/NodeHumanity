@@ -22,6 +22,7 @@ class Game extends React.Component {
     this.onPlayerList = this.onPlayerList.bind(this);
     this.onPlayerJoin = this.onPlayerJoin.bind(this);
     this.onDrawHand = this.onDrawHand.bind(this);
+    this.onRoundWon = this.onRoundWon.bind(this);
     this.onDrawCard = this.onDrawCard.bind(this);
     this.printMessage = this.printMessage.bind(this);
     this.printPlayers = this.printPlayers.bind(this);
@@ -45,6 +46,7 @@ class Game extends React.Component {
     this.props.socket.on('drewcard',this.onDrawCard);
     this.props.socket.on('startinghand',this.onDrawHand);
     this.props.socket.on('newround',this.onRound);
+    this.props.socket.on('roundwinner',this.onRoundWon);
     this.props.socket.on('stage2',this.onStage2);
     this.props.socket.emit('getplayers');
     this.props.dispatch(setHeaderDisplay('none'));
@@ -52,6 +54,7 @@ class Game extends React.Component {
   componentWillUnmount(){
     this.props.socket.removeListener('playerlist',this.onPlayerList);
     this.props.socket.removeListener('playerjoin',this.onPlayerJoin);
+    this.props.socket.removeListener('roundwinner',this.onRoundWon);
     this.props.socket.removeListener('playerleft',this.onPlayerLeave);
     this.props.socket.removeListener('chatmessage',this.onChatMessage);
     this.props.socket.removeListener('stage2',this.onStage2);
@@ -72,9 +75,12 @@ class Game extends React.Component {
     this.props.socket.emit('choosewinner',index);
   }
   onRound(data){
-    let newState = {blackCard:data.blackCard,stage:1,round:data.round,czar:data.czar,choice:null,selections:null};
+    let newState = {blackCard:data.blackCard,stage:1,round:data.round,czar:data.czar,choice:null,selections:null,roundWinner:null};
     console.log('NS',newState);
     this.setState(Object.assign({},this.state,newState));
+  }
+  onRoundWon(data){
+    this.setState(Object.assign({},this.state,{roundWinner:{name:data.user,cardNumber:data.cardNumber}}));
   }
   onDrawCard(cardID){
     var hand = this.state.hand.slice(0);
@@ -177,7 +183,7 @@ class Game extends React.Component {
         <div className='inner'>
           <Card className='prompt' color='black' text={this.state.blackCard ? this.props.blackCards[this.state.blackCard].text : null}/>
           <div className='selections'>{this.state.selections.map((cardID,index)=>{
-            return (<Card onClick={()=>{this.chooseWinner(index)}} key={index} text={this.props.whiteCards[cardID]}/>)
+            return (<Card className={this.state.roundWinner ? this.state.roundWinner.cardNumber === index : null} onClick={()=>{isCzar ? this.chooseWinner(index) : null}} key={index} text={this.props.whiteCards[cardID]}/>)
           })}</div>
         </div>
       )

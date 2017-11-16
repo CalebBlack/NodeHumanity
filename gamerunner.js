@@ -27,8 +27,10 @@ class GameRunner {
     this.chooseCard = this.chooseCard.bind(this);
     this.roundTimeout = this.roundTimeout.bind(this);
     this.chooseWinner = this.chooseWinner.bind(this);
+    this.nextRound = this.nextRound.bind(this);
     this.won = this.won.bind(this);
     this.roundTimeLimit = 10000;
+    this.round2TimeLimit = 10000;
     this.checkStart = this.checkStart.bind(this);
     this.started = false;
     this.room = room;
@@ -79,7 +81,19 @@ class GameRunner {
     socket.removeListener('choosewinner',this.chooseWinner);
   }
   stage2() {
+    if (this.interval) {
+      clearInterval(this.interval);
+      this.interval = setInterval(this.nextRound,this.round2TimeLimit);
+    }
     this.stage = 2;
+    Object.keys(this.hands).forEach(handID=>{
+      let hand = this.hands[handID];
+      let selected = this.selections[handID];
+      if (selected) {
+        let cardIndex = hand.indexOf(selected);
+        if (cardIndex > -1) hand.splice(cardIndex,1);
+      }
+    })
     this.emit('stage2', Object.values(this.selections));
   }
   chooseCard(socket,id) {
@@ -103,7 +117,10 @@ class GameRunner {
   chooseWinner(socket,index) {
     if (typeof index == 'number' && this.stage == 2 && this.cardCzar === socket) {
       if (!this.winner(index)) {
-        this.nextRound();
+        if (this.interval) {
+          clearInterval(this.interval);
+        }
+        this.interval = setInterval(this.nextRound,500);
       }
     }
   }
@@ -114,7 +131,8 @@ class GameRunner {
     if (!user) return false;
     let id = user.id;
     this.emit('roundwinner', {
-      user: user.user.username
+      user: user.user.username,
+      cardNumber: index
     });
     this.wins[id] = (this.wins[id] || 0) + 1;
     let won = this.wins[id] >= this.winAmount;

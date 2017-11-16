@@ -59,10 +59,12 @@ class GameRunner {
   drawAll() {
     Object.entries(this.hands).forEach(handPair => {
       if (!this.room.players[handPair[0]]) return;
+      let socket = this.room.players[handPair[0]];
+      if (socket === this.cardCzar) return;
       let hand = handPair[1];
       let card = drawCard(false);
       hand.push(card);
-      this.room.players[handPair[0]].emit('drewcard', card);
+      socket.emit('drewcard', card);
     });
   }
   nextRound() {

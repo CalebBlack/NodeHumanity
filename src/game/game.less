@@ -41,10 +41,26 @@
     }
   }
   .inner {
+    position: relative;
     width: ~"calc(100% - 100px)";
     max-width: ~"calc(100% - 100px)";
     height: ~'calc(100% - 179px)';
     max-height: ~'calc(100% - 179px)';
+    .hand {
+      max-width: 100%;
+      display:block;
+      overflow-x: auto;
+      overflow-y: hidden;
+      white-space: nowrap;
+      .card {
+        width: 100px;
+        height: 150px;
+        font-size: 1em;
+        &.chosen {
+          background-color: #fff1f3;
+        }
+      }
+    }
   }
   .chatbox {
     padding: 5px 30px;

@@ -1,5 +1,6 @@
 import React from 'react';
 import setHeaderDisplay from '../redux/actions/setheaderdisplay';
+import Card from '../components/card';
 import {connect} from 'react-redux';
 
 import './game.less';
@@ -26,7 +27,9 @@ class Game extends React.Component {
     this.printPlayers = this.printPlayers.bind(this);
     this.renderInner = this.renderInner.bind(this);
     this.onGameStart = this.onGameStart.bind(this);
+    this.chooseCard = this.chooseCard.bind(this);
     this.onRound = this.onRound.bind(this);
+    //this.onClick = this.onClick.bind(this);
     this.chatSubmit = this.chatSubmit.bind(this);
     this.leave = this.leave.bind(this);
     this.onChatMessage = this.onChatMessage.bind(this);
@@ -54,8 +57,12 @@ class Game extends React.Component {
     this.props.socket.removeListener('newround',this.onRound);
     this.props.socket.removeListener('drewcard',this.onDrawCard);
   }
+  chooseCard(index){
+    console.log('Choosing Card',index);
+    this.setState(Object.assign({},this.state,{choice:index}));
+  }
   onRound(data){
-    let newState = {blackCard:data.blackCard,round:data.round,czar:data.czar};
+    let newState = {blackCard:data.blackCard,round:data.round,czar:data.czar,choice:null};
     console.log('NS',newState);
     this.setState(Object.assign({},this.state,newState));
   }
@@ -148,12 +155,25 @@ class Game extends React.Component {
     );
   }
   renderInner(){
-    return (
-      <div className='inner'>
-        <p>Cards: {this.state.hand.join(',')}</p>
-        <p>Czar: {(this.state.czar === this.props.user.username).toString()}</p>
-      </div>
-    )
+    let isCzar = this.state.czar === this.props.user.username;
+    if (isCzar) {
+      return (
+        <div className='inner'>
+          <p>Waiting for Players to choose...</p>
+        </div>
+      )
+    } else {
+      return (
+        <div className='inner'>
+          <div className='hand'>{this.state.hand.map((cardID,index)=>{
+            return (<Card className={index === this.state.choice ? 'chosen' : null} onClick={()=>{this.chooseCard(index)}} key={index} text={this.props.whiteCards[cardID]}/>)
+          })}</div>
+          <p>Cards: {this.state.hand.join(',')}</p>
+          <p>Czar: {isCzar.toString()}</p>
+        </div>
+      )
+    }
+
   }
   chatSubmit(){
     if (this.input) {
@@ -168,4 +188,4 @@ class Game extends React.Component {
     this.props.socket.emit('leaveroom');
   }
 }
-export default connect(state=>{return {user:state.user}})(Game);
+export default connect(state=>{return {user:state.user,blackCards:state.blackCards,whiteCards:state.whiteCards}})(Game);

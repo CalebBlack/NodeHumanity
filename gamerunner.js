@@ -45,6 +45,7 @@ class GameRunner {
     this.stage = 1;
     this.roundNumber++;
     let playerIDs = Object.keys(this.room.players);
+    if (playerIDs.length < 1) return this.room.destroy();
     console.log(playerIDs,this.roundNumber, (this.roundNumber - 1) % playerIDs.length);
     this.cardCzar = this.room.players[playerIDs[(this.roundNumber - 1) % playerIDs.length]];
     this.selections = {};
@@ -120,7 +121,8 @@ class GameRunner {
     return won;
   }
   won(id){
-    this.emit('gamewon',{user:this.room.players[id].username});
+    console.log(id,Object.keys(this.room.players));
+    this.emit('gamewon',{user:this.room.players[id].user.username});
     this.room.destroy();
   }
   checkStart() {

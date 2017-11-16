@@ -36,7 +36,7 @@ class Game extends React.Component {
     this.chatSubmit = this.chatSubmit.bind(this);
     this.leave = this.leave.bind(this);
     this.onChatMessage = this.onChatMessage.bind(this);
-    this.state = {stage:1,players:[],messages:[],hand:[],started:false,gameWinner:null};
+    this.state = {stage:1,wins:{},players:{},messages:[],hand:[],started:false,gameWinner:null};
   }
   componentWillMount(){
     this.props.socket.on('playerlist',this.onPlayerList);
@@ -105,26 +105,30 @@ class Game extends React.Component {
     this.setState(Object.assign({},this.state,{started:true}));
   }
   onPlayerJoin(player){
-    let index = playerIndex(this.state.players,player.username);
-    if (!index) {
-      let newPlayers = this.state.players.slice(0);
-      newPlayers.push(player);
+    if (!this.state.players[player.username]) {
+      let newPlayers = Object.assign({},this.state.players);
+      newPlayers[player.username] = player.displayname;
+      console.log('pjnp',newPlayers,this.state.players);
       this.setState(Object.assign({},this.state,{players:newPlayers}));
     }
   }
   onPlayerList(playerList){
-    this.setState(Object.assign({},this.state,{players:playerList}));
+    var playerObject = {};
+    playerList.forEach(playerData=>{
+      playerObject[playerData.username] = playerData.displayname;
+    });
+    console.log('po',playerObject);
+    this.setState(Object.assign({},this.state,{players:playerObject}));
   }
   onPlayerLeave(player){
-    let index = playerIndex(this.state.players,player.username);
-    if (index) {
-      let newPlayers = this.state.players.slice(0);
-      newPlayers.splice(index,1);
+    if (this.state.players[player.username]) {
+      var newPlayers = Object.assign({},this.state.players);
+      delete newPlayers[player.username];
       this.setState(Object.assign({},this.state,{players:newPlayers}));
     }
   }
   printPlayers(){
-    this.printMessage('','Players: '+this.state.players.map(player=>{return player.displayname}).join(', '));
+    this.printMessage('','Players: '+Object.values(this.state.players).map(player=>{return player.displayname}).join(', '));
   }
   printMessage(displayname='',message='') {
     if (message.length > 0) {
@@ -138,10 +142,8 @@ class Game extends React.Component {
     }
   }
   onChatMessage(message){
-    var newMessages = this.state.messages.slice(0);
-    let userIndex = playerIndex(this.state.players,message.sender);
-    if (userIndex !== null) {
-      let displayname = this.state.players[userIndex].displayname;
+    let displayname = this.state.players[message.sender];
+    if (displayname !== null) {
       this.printMessage(displayname,message.message);
     }
   }
@@ -153,8 +155,14 @@ class Game extends React.Component {
           <div className='statusbar'>
             <span className='roomnumber'>Room #{this.props.room}</span>
             {this.state.round ? <span className='roundnumber'>Round {this.state.round}</span> : null}
-            <span className='players' onClick={this.printPlayers}>Players: {this.state.players.length}</span>
+            <span className='players' onClick={this.printPlayers}>Players: {Object.keys(this.state.players).length}</span>
             <button className='leave' onClick={this.leave}>Leave</button>
+          </div>
+          <div className='playerwins'>
+            <h4>Points:</h4>
+            {Object.entries(this.state.players).map((playerPair,index)=>{return (
+              <span key={index} className='player'>{playerPair[1]+': '+(this.state.wins[playerPair[0]] || 0)}</span>
+            )})}
           </div>
         </div>
         {this.renderInner()}
@@ -210,7 +218,7 @@ class Game extends React.Component {
         return (
           <div className='inner'>
             <Card className='prompt' color='black' text={this.state.blackCard ? this.props.blackCards[this.state.blackCard].text : null}/>
-            <p className='waiting'>Waiting for other players to choose...</p>
+            <p className='alert waiting'>Waiting for other players to choose...</p>
           </div>
         )
       }

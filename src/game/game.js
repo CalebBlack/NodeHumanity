@@ -128,7 +128,7 @@ class Game extends React.Component {
     }
   }
   printPlayers(){
-    this.printMessage('','Players: '+Object.values(this.state.players).map(player=>{return player.displayname}).join(', '));
+    this.printMessage('','Players: '+Object.values(this.state.players).join(', '));
   }
   printMessage(displayname='',message='') {
     if (message.length > 0) {

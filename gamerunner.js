@@ -86,6 +86,7 @@ class GameRunner {
     console.log(socket.user.username,'choosing',id);
     if (typeof id != 'number' || this.stage != 1 || socket === this.cardCzar) return;
     let hand = this.hands[socket.id];
+    if (!hand) return this.room.destroy();
     if (hand[id]) {
       this.selections[socket.id] = hand[id];
       console.log(Object.keys(this.selections).length ,Object.keys(this.room.players).length - 1);

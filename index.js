@@ -10,7 +10,7 @@ const stringToInt = require('./functions/stringtoint');
 const fs = require('fs');
 const http = require('http');
 const https = require('https');
-const letsEncrypt = require('letsencrypt-express')
+const letsEncrypt = require('letsencrypt-express').testing();
 
 const port = process.argv[2] ? stringToInt(process.argv[2]) : null;
 

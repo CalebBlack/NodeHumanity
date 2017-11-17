@@ -28,7 +28,7 @@ if (port) {
   httpServer.listen(port);
   console.log(`Server Running on Port ${port}.`);
 } else {
-  let server = letsEncrypt.create({server:'production',email:'lily@lillith.pw',agreeTos:true,approveDomains:['sxuan.ch','www.sxuan.ch'],app});
+  let server = letsEncrypt.create({server:'staging',email:'lily@lillith.pw',agreeTos:true,approveDomains:['sxuan.ch','www.sxuan.ch'],app});
   console.log('Running Encrypted Server');
   server.listen(80,443);
 }

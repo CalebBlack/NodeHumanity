@@ -1,7 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const helmet = require('helmet');
-const http = require('http');
 const compression = require('compression');
 //const enforce = require('express-sslify');
 
@@ -9,7 +8,6 @@ const api = require('./api');
 const {sockets} = require('./sockets');
 
 const app = express();
-const server = http.Server(app);
 
 // EXPRESS CONFIG
 app.disable('x-powered-by');

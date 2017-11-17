@@ -5,8 +5,6 @@ const compression = require('compression');
 //const enforce = require('express-sslify');
 
 const api = require('./api');
-const {sockets} = require('./sockets');
-
 const app = express();
 
 // EXPRESS CONFIG
@@ -36,4 +34,4 @@ app.use('/api',api);
 // OTHER
 app.use((req, res) => res.sendFile(`${__dirname}/public/index.html`));
 
-module.exports = server;
+module.exports = app;

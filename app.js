@@ -35,6 +35,5 @@ app.use('/api',api);
 
 // OTHER
 app.use((req, res) => res.sendFile(`${__dirname}/public/index.html`));
-sockets(server);
 
 module.exports = server;

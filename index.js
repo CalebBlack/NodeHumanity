@@ -10,9 +10,9 @@ const fs = require('fs');
 
 const port = process.argv[2] ? stringToInt(process.argv[2]) : null;
 
-if (port === null) {
-  throw new Error('Invalid Port Argument.');
-}
+// if (port === null) {
+//   throw new Error('Invalid Port Argument.');
+// }
 
 
 if (!fs.existsSync('./build/source.js')) throw new Error('Source Not Built! Type "npm run build"');

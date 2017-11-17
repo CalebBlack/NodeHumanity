@@ -42,6 +42,7 @@
     "isemail": "^3.0.0",
     "less": "^2.7.3",
     "less-loader": "^4.0.5",
+    "letsencrypt-express": "^2.0.6",
     "mongoose": "^4.13.0",
     "react": "^16.0.0",
     "react-dom": "^16.0.0",

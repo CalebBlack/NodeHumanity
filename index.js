@@ -10,6 +10,7 @@ const stringToInt = require('./functions/stringtoint');
 const fs = require('fs');
 const http = require('http');
 const https = require('https');
+const letsEncrypt = require('letsencrypt-express')
 
 const port = process.argv[2] ? stringToInt(process.argv[2]) : null;
 
@@ -27,16 +28,7 @@ if (port) {
   httpServer.listen(port);
   console.log(`Server Running on Port ${port}.`);
 } else {
-  if (fs.existsSync('sslcert/server.key') && fs.existsSync('sslcert/server.crt')) {
-    var privateKey  = fs.readFileSync('sslcert/server.key', 'utf8');
-    var certificate = fs.readFileSync('sslcert/server.crt', 'utf8');
-    var credentials = {key: privateKey, cert: certificate};
-    var httpsServer = https.createServer(credentials, app);
-    console.log('Launching Secure and Insecure HTTP servers');
-    httpServer.listen(80);
-    httpsServer.listen(443);
-  } else {
-    httpServer.listen(80);
-    console.log(`Server Running on Port 80.`);
-  }
+  let server = letsEncrypt.create({server:'production',email:'lily@lillith.pw',agreeTos:true,approveDomains:['sxuan.ch','www.sxuan.ch'],app});
+  console.log('Running Encrypted Server');
+  server.listen(80,443);
 }

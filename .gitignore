@@ -4,3 +4,4 @@ package-lock.json
 public/cards.json
 build/
 deploy/
+mongoconfig.js

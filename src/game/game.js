@@ -71,18 +71,20 @@ class Game extends React.Component {
     console.log('choice',this.state.choice);
     if (typeof this.state.choice == 'number') {
       var newHand = this.state.hand.slice(0);
-      newHand.splice(this.state.choice,1);
-      newState.hand = newHand;
-      console.log('hands',this.state.hand,newHand);
+      let index = newHand.indexOf(this.state.choice);
+      if (index >= 0) {
+        newHand.splice(index,1);
+        newState.hand = newHand;
+      }
     }
     this.setState(Object.assign({},this.state,newState));
   }
   onGameWinner(data){
     this.setState(Object.assign({},this.state,{gameWinner:data}));
   }
-  chooseCard(index){
-    this.setState(Object.assign({},this.state,{choice:index}));
-    this.props.socket.emit('choosecard',index);
+  chooseCard(cardID){
+    this.setState(Object.assign({},this.state,{choice:cardID}));
+    this.props.socket.emit('choosecard',cardID);
   }
   chooseWinner(index){
     this.props.socket.emit('choosewinner',index);
@@ -229,7 +231,7 @@ class Game extends React.Component {
         <div className='inner'>
           <Card className='prompt' color='black' text={this.state.blackCard ? this.props.blackCards[this.state.blackCard].text : null}/>
           <div className='hand'>{this.state.hand.map((cardID,index)=>{
-            return (<Card className={index === this.state.choice ? 'chosen' : null} onClick={()=>{this.chooseCard(index)}} key={index} text={this.props.whiteCards[cardID]}/>)
+            return (<Card className={cardID === this.state.choice ? 'chosen' : null} onClick={()=>{this.chooseCard(cardID)}} key={index} text={this.props.whiteCards[cardID]}/>)
           })}</div>
         </div>
       )

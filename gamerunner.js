@@ -99,7 +99,6 @@ class GameRunner {
     this.emit('stage2', Object.values(this.selections));
   }
   chooseCard(socket,cardID) {
-    console.log(socket.user.username,'choosing',id);
     if (typeof id != 'number' || this.stage != 1 || socket === this.cardCzar) return;
     let hand = this.hands[socket.id];
     if (!hand) return this.room.destroy(false,'missing hand!');
@@ -108,8 +107,6 @@ class GameRunner {
       this.selections[socket.id] = cardID;
       //console.log(Object.keys(this.selections).length ,Object.keys(this.room.players).length - 1);
       if (Object.keys(this.selections).length >= Object.keys(this.room.players).length - 1) this.stage2();
-    } else {
-      console.log('ni',hand,id);
     }
   }
   connected(socket) {

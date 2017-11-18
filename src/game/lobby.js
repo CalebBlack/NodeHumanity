@@ -32,7 +32,7 @@ class Lobby extends React.Component {
         </div>
         <div className='controlbar'>
         <button className='refresh' onClick={()=>{this.props.socket.emit('listrooms')}}>Refresh</button>
-        <button className='createroom' onClick={()=>{this.props.socket.emit('createroom')}}>Create</button>
+        <button className='createroom' onClick={()=>{this.props.socket.emit('createroom')}}>Create Room</button>
         </div>
       </div>
     );

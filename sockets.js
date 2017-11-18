@@ -4,7 +4,7 @@ var connected = {};
 const GameManager = require('./gamemanager');
 
 function sockets(server) {
-  let io = require('socket.io')(server);
+  let io = require('socket.io')(server, {cookie: false});
 
   io.on('connection', function(socket) {
     socket.auth = false;

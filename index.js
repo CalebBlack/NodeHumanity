@@ -28,7 +28,7 @@ if (port) {
   httpServer.listen(port);
   console.log(`Server Running on Port ${port}.`);
 } else {
-  let lex = LEX.create({server:'staging',email:'lily@lillith.pw',agreeTos:true,approveDomains:['sxuan.ch','www.sxuan.ch']});
+  let lex = LEX.create({server:'staging',email:'sxuanchonline@gmail.com',agreeTos:true,approveDomains:['sxuan.ch','www.sxuan.ch']});
   let server = http.createServer(lex.middleware(require('redirect-https')()));
   let secureServer = https.createServer(lex.httpsOptions,lex.middleware(app))
   sockets(secureServer);

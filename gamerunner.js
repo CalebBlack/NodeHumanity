@@ -103,7 +103,7 @@ class GameRunner {
     let hand = this.hands[socket.id];
     if (!hand) return this.room.destroy(false,'missing hand!');
     let index = hand.indexOf(cardID);
-    console.log('ci',index);
+    console.log('ci',index,cardID,hand);
     if (index > -1) {
       this.selections[socket.id] = cardID;
       console.log('r2c',Object.keys(this.selections).length ,Object.keys(this.room.players).length - 1);
@@ -159,6 +159,7 @@ class GameRunner {
     this.round();
   }
   start() {
+    if (this.started === true) return;
     this.started = true;
     this.emit('gamestarting');
     console.log('players:',Object.keys(this.room.players).length);

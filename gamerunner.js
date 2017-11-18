@@ -103,9 +103,10 @@ class GameRunner {
     let hand = this.hands[socket.id];
     if (!hand) return this.room.destroy(false,'missing hand!');
     let index = hand.indexOf(cardID);
+    console.log('ci',index);
     if (index > -1) {
       this.selections[socket.id] = cardID;
-      console.log(Object.keys(this.selections).length ,Object.keys(this.room.players).length - 1);
+      console.log('r2c',Object.keys(this.selections).length ,Object.keys(this.room.players).length - 1);
       if (Object.keys(this.selections).length >= Object.keys(this.room.players).length - 1) this.stage2();
     }
   }

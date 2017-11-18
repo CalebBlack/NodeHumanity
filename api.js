@@ -82,7 +82,7 @@ api.post('/signup', (req, res) => {
     } else {
       if (usernameValid !== true) {
         if (passwordValid !== true) {
-          res.status(400).send('Invalid Username: '+usernameValid+', Invalid Password':+passwordValid);
+          res.status(400).send('Invalid Username: '+usernameValid+', Invalid Password: '+passwordValid);
         } else {
           res.status(400).send('Invalid Username: '+usernameValid);
         }

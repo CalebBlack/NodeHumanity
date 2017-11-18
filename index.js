@@ -10,7 +10,7 @@ const stringToInt = require('./functions/stringtoint');
 const fs = require('fs');
 const http = require('http');
 const https = require('https');
-const letsEncrypt = require('letsencrypt-express').testing();
+const LEX = require('letsencrypt-express');
 
 const port = process.argv[2] ? stringToInt(process.argv[2]) : null;
 
@@ -28,11 +28,11 @@ if (port) {
   httpServer.listen(port);
   console.log(`Server Running on Port ${port}.`);
 } else {
-  let lex = letsEncrypt.create({server:'staging',email:'lily@lillith.pw',agreeTos:true,approveDomains:['sxuan.ch','www.sxuan.ch']});
-  let responder = letsEncrypt.createAcmeResponder(lex, app);
-  let secureServer = https.createServer(lex.httpsOptions, responder);
-  let server = http.createServer(responder);
+  let lex = LEX.create({server:'staging',email:'lily@lillith.pw',agreeTos:true,approveDomains:['sxuan.ch','www.sxuan.ch']});
+  let server = http.createServer(lex.middleware(require('redirect-https')()));
+  let secureServer = https.createServer(lex.httpsOptions,lex.middleware(app))
   socket(secureServer);
-  console.log('Running Encrypted Server');
-  server.listen(80,443);
+  console.log('Running Servers');
+  server.listen(80);
+  secureServer.listen(443)
 }

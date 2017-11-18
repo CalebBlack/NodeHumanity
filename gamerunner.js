@@ -99,7 +99,7 @@ class GameRunner {
     this.emit('stage2', Object.values(this.selections));
   }
   chooseCard(socket,cardID) {
-    if (typeof id != 'number' || this.stage != 1 || socket === this.cardCzar) return;
+    if (typeof cardID != 'number' || this.stage != 1 || socket === this.cardCzar) return;
     let hand = this.hands[socket.id];
     if (!hand) return this.room.destroy(false,'missing hand!');
     let index = hand.indexOf(cardID);

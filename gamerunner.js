@@ -105,7 +105,7 @@ class GameRunner {
     let index = hand.indexOf(cardID);
     if (index > -1) {
       this.selections[socket.id] = cardID;
-      //console.log(Object.keys(this.selections).length ,Object.keys(this.room.players).length - 1);
+      console.log(Object.keys(this.selections).length ,Object.keys(this.room.players).length - 1);
       if (Object.keys(this.selections).length >= Object.keys(this.room.players).length - 1) this.stage2();
     }
   }

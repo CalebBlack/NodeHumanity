@@ -19,7 +19,7 @@ function password(password) {
   if (typeof password == 'string') {
     if (password.length > 7) {
       for (var char in password) {
-        if (!validPasswordCharacters.includes(char)) return 'Invalid Character';
+        if (!validPasswordCharacters.includes(char)) return 'Invalid Character "'+char+'"';
       }
       return true;
     } else {

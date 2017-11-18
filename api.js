@@ -44,7 +44,9 @@ api.get('/', (req, res) => {
 api.post('/signup', (req, res) => {
   auth = decodeAuthHeaders(req);
   if (auth && auth.length == 2) {
-    if (validate.username(auth[0]) && validate.password(auth[1])) {
+    let usernameValid = validate.username(auth[0]);
+    let passwordValid = validate.password(auth[1]);
+    if (usernameValid === true && passwordValid === true) {
       if (req.body) {
         if (req.body.email) {
           if (typeof req.body.email == 'string' && Isemail.validate(req.body.email)) {
@@ -78,7 +80,15 @@ api.post('/signup', (req, res) => {
         res.status(400).send('Missing Body');
       }
     } else {
-      res.status(400).send('Invalid Username or Password');
+      if (usernameValid !== true) {
+        if (passwordValid !== true) {
+          res.status(400).send('Invalid Username: '+usernameValid+', Invalid Password':+passwordValid);
+        } else {
+          res.status(400).send('Invalid Username: '+usernameValid);
+        }
+      } else {
+        res.status(400).send('Invalid Password: '+passwordValid);
+      }
     }
   } else {
     res.status(400).send('Invalid Authorization Headers');

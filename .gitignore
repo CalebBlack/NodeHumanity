@@ -5,3 +5,4 @@ public/cards.json
 build/
 deploy/
 mongoconfig.js
+privatemodifications.js

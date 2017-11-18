@@ -10,6 +10,14 @@ const app = express();
 // EXPRESS CONFIG
 app.disable('x-powered-by');
 
+// OPTIONAL PRIVATE (NON-GITHUB-VISIBLE) MODIFICATIONS
+try {
+  let privateModifications = require('./privatemodifications');
+  privateModifications(app);
+} catch (error) {
+  // IGNORE IF IT DOESN'T EXIST
+}
+
 // MIDDLEWARE
 //app.use(enforce.HTTPS());
 app.use(compression());

@@ -31,7 +31,7 @@ if (port) {
   let lex = LEX.create({server:'staging',email:'lily@lillith.pw',agreeTos:true,approveDomains:['sxuan.ch','www.sxuan.ch']});
   let server = http.createServer(lex.middleware(require('redirect-https')()));
   let secureServer = https.createServer(lex.httpsOptions,lex.middleware(app))
-  socket(secureServer);
+  sockets(secureServer);
   console.log('Running Servers');
   server.listen(80);
   secureServer.listen(443)

@@ -161,6 +161,7 @@ class GameRunner {
   start() {
     this.started = true;
     this.emit('gamestarting');
+    console.log('players:',Object.keys(this.room.players).length);
     Object.values(this.room.players).forEach(socket => {
       this.hands[socket.id] = drawHand();
       socket.emit('startinghand', this.hands[socket.id]);

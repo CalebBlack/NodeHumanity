@@ -153,13 +153,14 @@ class Game extends React.Component {
     }
   }
   render(){
+    let playerCount = Object.keys(this.state.players).length;
     return(
       <div id='game'>
         <div className='sidebar'>
           <div className='statusbar'>
             <span className='roomnumber'>Room #{this.props.room}</span>
             {this.state.round ? <span className='roundnumber'>Round {this.state.round}</span> : null}
-            <span className='players' onClick={this.printPlayers}>Players: {Object.keys(this.state.players).length}</span>
+            <span className='players' onClick={this.printPlayers}>Players: {playerCount < 3 ? playerCount+'/3': playerCount}</span>
             <button className='leave' onClick={this.leave}>Leave</button>
           </div>
           <div className='playerwins'>

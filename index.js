@@ -17,14 +17,14 @@ const port = process.argv[2] ? stringToInt(process.argv[2]) : null;
 // if (port === null) {
 //   throw new Error('Invalid Port Argument.');
 // }
-const httpServer = http.Server(app);
-sockets(httpServer);
 
 
 if (!fs.existsSync('./build/source.js')) throw new Error('Source Not Built! Type "npm run build"');
 
 
 if (port) {
+  var httpServer = http.Server(app);
+  sockets(httpServer);
   httpServer.listen(port);
   console.log(`Server Running on Port ${port}.`);
 } else {

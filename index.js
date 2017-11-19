@@ -1,5 +1,5 @@
 try {
-  const cards = require('./public/cards.json');
+  const cards = require('./resources/cards.json');
 } catch (error) {
   throw new Error('Cannot Start, Missing/Invalid Card List');
 }

@@ -14,5 +14,8 @@ Type `npm start` to launch the server on ports 80 (redirects to 443) and 443 (se
 
 ## Custom Configuration
 ### Custom API Routes
+<<<<<<< HEAD
 
 Routes to be added to the API (available at /api/{route}) can be either placed in the routes or secure routes folder, and must export an array formatted like this: `[function(req,res){},'get','/url']`. Additionally routes must also be listed in the accompanying map.js file to be required automatically. Routes in the secure routes folder will automatically ensure the user provides a valid session with their request.
+=======
+>>>>>>> 1a4846b35cd1b323f4bbf03247a22ded8e5954c0

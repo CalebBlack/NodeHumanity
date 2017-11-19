@@ -7,7 +7,7 @@ function authenticateRequest(req){
     if (auth && auth.length == 2) {
       User.findOne({username:auth[0]},(err,user)=>{
         if (err) return reject(err);
-        if (!user) return reject();
+        if (!user) return reject('banned');
         if (user.banned === true) return reject();
         bcrypt.compare(auth[0], user.hash, function(err, res) {
           if (err || res !== true) reject(err);

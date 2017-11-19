@@ -4,5 +4,6 @@ module.exports = {
   email: {type:String,required:true,unique:true},
   created: { type: Date, default: Date.now },
   hash: {type:String,required:true},
-  admin: {type:Boolean,required:true,default:false}
+  admin: {type:Boolean,required:true,default:false},
+  banned:{type:Boolean,required:true,default:false}
 }

@@ -9,4 +9,8 @@ Sxuanch is an online multiplayer Cards Against Humanity simulator created with N
 
 
 ## Running
-Type `npm start` to launch the server on ports 80 (redirects to 443) and 443.
+Type `npm start` to launch the server on ports 80 (redirects to 443) and 443 (secure).
+
+
+## Custom Configuration
+### Custom API Routes

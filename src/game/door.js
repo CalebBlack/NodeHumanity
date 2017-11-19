@@ -33,9 +33,9 @@ class Door extends React.Component {
     this.props.dispatch(setUser(user));
   }
   onConnect(){
-    socket.on('*', function(data){
-      console.log('event:','"'+data.data[0]+'"','data:',data.data[1]);
-    });
+    // socket.on('*', function(data){
+    //   console.log('event:','"'+data.data[0]+'"','data:',data.data[1]);
+    // });
     console.log('connected');
     socket.emit('authenticate', {token: localStorage.sessionID});
     this.setState(Object.assign({},self.state,{connected:true}));

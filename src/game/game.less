@@ -166,8 +166,10 @@
 
       .senders {
         min-width: 10px;
-        width: 80px;
-        max-width: 80px;
+        width: 120px;
+        max-width: 120px;
+        max-height: 20px;
+        height:20px;
         overflow-x: auto;
         overflow-y: visible;
 
@@ -180,11 +182,13 @@
 
       .messages {
         margin: 0;
-        max-width: ~'calc(100% - 80px)';
+        max-width: ~'calc(100% - 120px)';
 
         .text {
           width: 100%;
           margin: 0;
+          max-height: 20px;
+          height:20px;
           display: block;
           max-height: 40px;
           overflow: hidden;

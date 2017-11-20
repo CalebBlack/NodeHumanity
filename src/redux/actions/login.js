@@ -3,26 +3,30 @@ import {setLoginStatus} from '../actiontypes';
 import request from '../../functions/request';
 import safeParse from '../../functions/safeParse';
 
-export function login(username,password) {
+export function login(username,password,callback) {
   return dispatch=>{
     dispatch({type:setLoginStatus,loginStatus:loginStatuses.loggingIn});
     request('/api/login','get',{auth:[username,password]}).then(response=>{
       let data = safeParse(response);
+      if (callback) callback();
       if (data && data.session && data.session.id) localStorage.sessionID = data.session.id;
       dispatch({type:setLoginStatus,loginStatus:loginStatuses.loggedIn});
     }).catch(err=>{
+      if (callback) callback(err);
       dispatch({type:setLoginStatus,loginStatus:loginStatuses.failed});
     });
   }
 }
-export function signup(username,password,email) {
+export function signup(username,password,email,callback) {
   return dispatch=>{
     dispatch({type:setLoginStatus,loginStatus:loginStatuses.loggingIn});
     request('/api/signup','post',{auth:[username,password],body:{email}}).then(response=>{
       let data = safeParse(response);
+      if (callback) callback();
       if (data && data.session && data.session.id) localStorage.sessionID = data.session.id;
       dispatch({type:setLoginStatus,loginStatus:loginStatuses.loggedIn});
     }).catch(err=>{
+      if (callback) callback(err);
       dispatch({type:setLoginStatus,loginStatus:loginStatuses.failed});
     })
   }

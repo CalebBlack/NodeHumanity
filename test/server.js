@@ -81,7 +81,13 @@ describe('Rest API',function(){
   describe('Login',function(){
     it('rejects empty requests',function(done){
       chai.request(app).get('/api/login').end(function(err, res) {
-        expect(res).to.have.status(400);
+        expect(res).to.have.status(401);
+        done();
+      });
+    });
+    it('accepts credentials from signup',function(done){
+      chai.request(app).get('/api/login').auth(testUser.username,testUser.password).end(function(err, res) {
+        expect(res).to.have.status(200);
         done();
       });
     });

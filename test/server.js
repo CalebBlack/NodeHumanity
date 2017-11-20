@@ -41,7 +41,9 @@ describe('Static Resources', function() {
   });
 });
 describe('Rest API',function(){
-  describe('Signup Route',function(){
+  let testUser = {username:randomLetters(10),password:randomLetters(10),email:randomLetters(5)+'@sxuan.ch'}
+  var session;
+  describe('Signup',function(){
     it('rejects empty requests',function(done){
       chai.request(app).post('/api/signup').end(function(err, res) {
         expect(res).to.have.status(400);
@@ -49,8 +51,37 @@ describe('Rest API',function(){
       });
     });
     it('allows requests with valid user details',function(done){
-      chai.request(app).post('/api/signup').auth(randomLetters(10),randomLetters(10)).send({email:randomLetters(5)+'@gmail.com'}).end(function(err,res){
+      chai.request(app).post('/api/signup').auth(testUser.username,testUser.password).send({email:testUser.email}).end(function(err,res){
+        session = res.body.session.id;
         expect(res).to.have.status(200);
+        done();
+      });
+    });
+  });
+  describe('Validate Auth',function(){
+    it('rejects empty requests',function(done){
+      chai.request(app).get('/api/validateauth').end(function(err, res) {
+        expect(res).to.have.status(400);
+        done();
+      });
+    });
+    it('rejects invalid sessions',function(done){
+      chai.request(app).get('/api/validateauth').set('session','iliveunderarockpleasehelp').end(function(err,res){
+        expect(res).to.have.status(400);
+        done();
+      });
+    });
+    it('accepts signup session',function(done){
+      chai.request(app).get('/api/validateauth').set('session',session).end(function(err,res){
+        expect(res).to.have.status(200);
+        done();
+      });
+    });
+  });
+  describe('Login',function(){
+    it('rejects empty requests',function(done){
+      chai.request(app).get('/api/login').end(function(err, res) {
+        expect(res).to.have.status(400);
         done();
       });
     });

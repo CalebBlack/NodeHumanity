@@ -24,7 +24,7 @@ function randomLetters(length=1){
 
 describe('Static Resources', function() {
   // TEST CARDS AVAILABILITY
-  describe('/index.html',function(){
+  describe('index.html',function(){
     it ('responds with status 200',function(done){
       chai.request(app).get('/index.html').end(function(err, res) {
         expect(res).to.have.status(200);
@@ -38,7 +38,7 @@ describe('Static Resources', function() {
       });
     });
   });
-  describe('/source.js',function(){
+  describe('source.js',function(){
     it ('responds with status 200',function(done){
       chai.request(app).get('/source.js').end(function(err, res) {
         expect(res).to.have.status(200);
@@ -52,7 +52,7 @@ describe('Static Resources', function() {
       });
     });
   });
-  describe('/cards.json', function() {
+  describe('cards.json', function() {
     it('responds with status 200', function(done) {
       chai.request(app).get('/cards.json').end(function(err, res) {
         expect(res).to.have.status(200);

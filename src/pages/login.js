@@ -39,7 +39,7 @@ class Login extends React.Component {
     let password = this.password.value.toLowerCase();
     if (username.length < 1 || password.length < 1) return;
     this.props.dispatch(login(username,password,err=>{
-      this.setState({error:err.response ? err.response : 'Signup Error'});
+      this.setState({error:err.response ? err.response : 'Login Error'});
     }));
   }
   // signup(){

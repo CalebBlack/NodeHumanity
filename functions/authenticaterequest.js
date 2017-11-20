@@ -14,6 +14,8 @@ function authenticateRequest(req){
           resolve(user);
         });
       })
+    } else {
+      reject('invalid auth');
     }
   });
 }

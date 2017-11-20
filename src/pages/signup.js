@@ -12,6 +12,7 @@ class Signup extends React.Component {
   constructor(props){
     super(props);
     this.submit = this.submit.bind(this);
+    this.state = {};
   }
   render(){
     if (this.props && this.props.loginStatus) {
@@ -23,6 +24,7 @@ class Signup extends React.Component {
     return (
     <form onSubmit={(e)=>{e.preventDefault();this.submit();}} className='signup'>
       <HomeLink/>
+      {this.state.error ? (<span className='warning'>{this.state.error}</span>) : null}
       <label htmlFor='username'>Username</label>
       <input ref={ref=>{this.username = ref;enforceInput.username(ref)}} id='username' name='username' className='username'/>
       <label htmlFor='password'>Password</label>
@@ -39,7 +41,9 @@ class Signup extends React.Component {
     let password = this.password.value.toLowerCase();
     let email = this.email.value;
     if (username.length < 1 || password.length < 1 || email.length < 5) return;
-    this.props.dispatch(signup(username,password,email));
+    this.props.dispatch(signup(username,password,email,err=>{
+      this.setState({error:err.response ? err.response : 'Signup Error'});
+    }));
   }
 }
 export default connect(state=>{

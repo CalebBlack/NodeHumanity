@@ -30,7 +30,8 @@ function request(url,method='get',options={}) {
       } else {
         reject({
           status: xhr.status,
-          statusText: xhr.statusText
+          statusText: xhr.statusText,
+          response: xhr.response
         });
       }
     }

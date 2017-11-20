@@ -1,7 +1,6 @@
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const app = require('../app');
-const api = require('../api');
 
 const expect = chai.expect;
 
@@ -25,6 +24,34 @@ function randomLetters(length=1){
 
 describe('Static Resources', function() {
   // TEST CARDS AVAILABILITY
+  describe('/index.html',function(){
+    it ('responds with status 200',function(done){
+      chai.request(app).get('/index.html').end(function(err, res) {
+        expect(res).to.have.status(200);
+        done();
+      });
+    });
+    it ('response is html',function(done){
+      chai.request(app).get('/index.html').end(function(err, res) {
+        expect(res).to.be.html;
+        done();
+      });
+    });
+  });
+  describe('/source.js',function(){
+    it ('responds with status 200',function(done){
+      chai.request(app).get('/source.js').end(function(err, res) {
+        expect(res).to.have.status(200);
+        done();
+      });
+    });
+    it ('content-type is UTF-8 encoded Javascript',function(done){
+      chai.request(app).get('/source.js').end(function(err, res) {
+        expect(res).to.have.header('content-type', 'application/javascript; charset=UTF-8');
+        done();
+      });
+    });
+  });
   describe('/cards.json', function() {
     it('responds with status 200', function(done) {
       chai.request(app).get('/cards.json').end(function(err, res) {

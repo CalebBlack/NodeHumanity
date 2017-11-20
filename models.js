@@ -1,6 +1,8 @@
 var mongoose = require('mongoose');
 const schemaMap = require('./schemas/map');
-mongoose.connect('mongodb://localhost/cardsagainsthumanity', { useMongoClient: true });
+mongoose.connect('mongodb://localhost/cardsagainsthumanity', { useMongoClient: true }, function(err) {
+    if (err) throw err;
+});
 mongoose.Promise = global.Promise;
 
 var output = {};

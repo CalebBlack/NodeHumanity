@@ -42,7 +42,9 @@ class Signup extends React.Component {
     let email = this.email.value;
     if (username.length < 1 || password.length < 1 || email.length < 5) return;
     this.props.dispatch(signup(username,password,email,err=>{
-      this.setState({error:err.response ? err.response : 'Signup Error'});
+      if (err) {
+        this.setState({error:err.response ? err.response : 'Signup Error'});
+      }
     }));
   }
 }

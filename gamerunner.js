@@ -1,4 +1,4 @@
-const cards = require('./public/cards.json');
+const cards = require('./resources/cards.json');
 const randomBetween = require('./functions/randombetween');
 const minimumPlayers = 3;
 

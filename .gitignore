@@ -1,7 +1,7 @@
 .DS_STORE
 node_modules/
 package-lock.json
-public/cards.json
+resources/cards.json
 build/
 deploy/
 mongoconfig.js

@@ -92,4 +92,24 @@ describe('Rest API',function(){
       });
     });
   });
+  describe('Logout',function(){
+    it('rejects empty requests',function(done){
+      chai.request(app).get('/api/logout').end(function(err, res) {
+        expect(res).to.have.status(401);
+        done();
+      });
+    });
+    it ('accepts signup session',function(done){
+      chai.request(app).get('/api/logout').set('session',session).end(function(err,res){
+        expect(res).to.have.status(200);
+        done();
+      });
+    });
+    it ('invalidates signup session',function(done){
+      chai.request(app).get('/api/validateauth').set('session',session).end(function(err,res){
+        expect(res).to.have.status(400);
+        done();
+      });
+    });
+  });
 });

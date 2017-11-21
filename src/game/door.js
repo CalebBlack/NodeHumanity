@@ -48,8 +48,8 @@ class Door extends React.Component {
   render(){
     if (this.props.loginStatus === loginStatuses.loggedOut) socket = null;
     if (this.props.loginStatus === null || [loginStatuses.loggingIn,loginStatuses.initializing].includes(this.props.loginStatus)) return (<Loading/>);
-    if (this.props.loginStatus !== loginStatuses.loggedIn || this.state.connected === false) return (<Redirect to='/login'/>);
-
+    if (this.props.loginStatus !== loginStatuses.loggedIn) return (<Redirect to='/login'/>);
+    if (this.state.connected === false) return (<Redirect to='/logout'/>);
     return (<Manager socket={socket}/>);
   }
   initializeSocket(){

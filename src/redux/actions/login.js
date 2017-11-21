@@ -38,6 +38,7 @@ export function initialize(){
         dispatch({type:setLoginStatus,loginStatus:loginStatuses.loggedIn});
       }).catch(err=>{
         dispatch({type:setLoginStatus,loginStatus:loginStatuses.expired});
+        localStorage.sessionID = null;
       });
     } else {
       dispatch({type:setLoginStatus,loginStatus:loginStatuses.loggedOut});

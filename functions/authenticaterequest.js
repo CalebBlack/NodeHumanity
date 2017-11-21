@@ -9,7 +9,9 @@ function authenticateRequest(req){
         if (err) return reject(err);
         if (!user) return reject('banned');
         if (user.banned === true) return reject();
-        bcrypt.compare(auth[0], user.hash, function(err, res) {
+        console.log(auth[0]);
+        bcrypt.compare(auth[1], user.hash, function(err, res) {
+          console.log('passed hash',res);
           if (err || res !== true) reject(err);
           resolve(user);
         });

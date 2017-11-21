@@ -55,7 +55,7 @@ api.post('/signup', (req, res) => {
               username: auth[0],
               email: req.body.email
             };
-            bcrypt.hash(auth[0], 10, function(err, hash) {
+            bcrypt.hash(auth[1], 10, function(err, hash) {
               if (err) return res.status(500).send();
               userData.hash = hash;
               var userEntry = new User(userData);
@@ -96,6 +96,7 @@ api.post('/signup', (req, res) => {
 });
 api.get('/login', (req, res) => {
   authenticateRequest(req).then(user=>{
+    console.log('authenticated',user)
     getSession(user).then(session=>{
       var userOut = {username:user.username,displayname:user.displayname};
       let sessionOut = {id:session._id,created:session.createdAt};

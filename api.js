@@ -96,7 +96,6 @@ api.post('/signup', (req, res) => {
 });
 api.get('/login', (req, res) => {
   authenticateRequest(req).then(user=>{
-    console.log('authenticated',user)
     getSession(user).then(session=>{
       var userOut = {username:user.username,displayname:user.displayname};
       let sessionOut = {id:session._id,created:session.createdAt};

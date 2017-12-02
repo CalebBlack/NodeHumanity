@@ -28,13 +28,13 @@ var authLimiter = new RateLimit({
 api.use('/login',authLimiter);
 api.use('/signup',authLimiter);
 // block non-xhr requests
-api.use((req,res,next)=>{
-  if (req.xhr) {
-    res.sendFile(`${__dirname}/private/apinonxhr.html`);
-  } else {
-    next();
-  }
-});
+// api.use((req,res,next)=>{
+//   if (req.xhr) {
+//     res.sendFile(`${__dirname}/private/apinonxhr.html`);
+//   } else {
+//     next();
+//   }
+// });
 
 // define the home page route
 api.get('/', (req, res) => {

@@ -22,8 +22,8 @@ function randomLetters(length=1){
 
 // BEGIN TESTING
 
+// TEST RESOURCE AVAILABILITY
 describe('Static Resources', function() {
-  // TEST CARDS AVAILABILITY
   describe('index.html',function(){
     it ('responds with status 200',function(done){
       chai.request(app).get('/index.html').end(function(err, res) {
@@ -67,9 +67,12 @@ describe('Static Resources', function() {
     });
   });
 });
+// TEST REST ENDPOINTS
 describe('Rest API',function(){
+  // GENERATE RANDOM CREDENTIALS TO TEST WITH
   let testUser = {username:randomLetters(10),password:randomLetters(10),email:randomLetters(5)+'@sxuan.ch'}
   var session;
+  // TEST SIGNUP
   describe('Signup',function(){
     it('rejects empty requests',function(done){
       chai.request(app).post('/api/signup').end(function(err, res) {
@@ -85,6 +88,7 @@ describe('Rest API',function(){
       });
     });
   });
+  // TEST AUTH VALIDATE ROUTE
   describe('Validate Auth',function(){
     it('rejects empty requests',function(done){
       chai.request(app).get('/api/validateauth').end(function(err, res) {
@@ -105,6 +109,7 @@ describe('Rest API',function(){
       });
     });
   });
+  // TEST LOGIN ROUTE
   describe('Login',function(){
     it('rejects empty requests',function(done){
       chai.request(app).get('/api/login').end(function(err, res) {
@@ -119,6 +124,7 @@ describe('Rest API',function(){
       });
     });
   });
+  // TEST LOGOUT ROUTE
   describe('Logout',function(){
     it('rejects empty requests',function(done){
       chai.request(app).get('/api/logout').end(function(err, res) {

@@ -1,23 +1,16 @@
+// require testing dependencies
 const chai = require('chai');
 const chaiHttp = require('chai-http');
+// require express app
 const app = require('../app');
-
-const expect = chai.expect;
-
+// require utility functions
+const {randomInt,randomLetters} = require('./utils');
+// declare chai.expect as just expect
+const {expect} = chai;
+// enable chai-http for chai
 chai.use(chaiHttp);
 
-// TESTING UTILITY FUNCTIONS
-function randomInt(min,max){
-    return Math.floor(Math.random()*(max-min+1)+min);
-}
-const letters = 'abcdefghijklmnopqrstuvwxyz';
-function randomLetters(length=1){
-  output = '';
-  for (var i = 0; i < length; i++) {
-    output += letters[randomInt(0,letters.length - 1)];
-  }
-  return output;
-}
+
 // END TESTING UTILITY FUNCTIONS
 
 // BEGIN TESTING

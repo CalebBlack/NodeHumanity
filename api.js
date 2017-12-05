@@ -64,6 +64,7 @@ api.post('/signup', (req, res) => {
                 var userOut = {username:user.username,displayname:user.displayname};
                 getSession(user).then(session=>{
                   let sessionOut = {id:session._id,created:session.createdAt};
+                  res.cookie('session',session._id, { maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true });
                   return res.status(200).json({user:userOut,session:sessionOut});
                 }).catch(err=>{
                   return res.status(200).json({user:userOut,session:'error'});
@@ -99,6 +100,7 @@ api.get('/login', (req, res) => {
     getSession(user).then(session=>{
       var userOut = {username:user.username,displayname:user.displayname};
       let sessionOut = {id:session._id,created:session.createdAt};
+      res.cookie('session',session._id, { maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true });
       res.status(200).json({session:sessionOut,user:userOut});
     }).catch(err=>{
       res.status(500).send('Internal Error');
